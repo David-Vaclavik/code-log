@@ -1,0 +1,17 @@
+{
+  "name": "code-log",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "api",
+    "client",
+    "admin"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=api\" \"npm run dev --workspace=client\" \"npm run dev --workspace=admin\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
