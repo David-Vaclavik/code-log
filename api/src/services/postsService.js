@@ -15,3 +15,8 @@ export const insertPost = async (title, content, tags) => {
 
   return rows[0];
 };
+
+export const getPostById = async (id) => {
+  const { rows } = await pool.query("SELECT * FROM posts WHERE id = $1", [id]);
+  return rows[0];
+};

@@ -1,4 +1,4 @@
-import { getAllPosts, insertPost } from "../services/postsService.js";
+import { getAllPosts, getPostById, insertPost } from "../services/postsService.js";
 
 export const getPosts = async (req, res) => {
   try {
@@ -25,5 +25,22 @@ export const createPost = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to create post" });
+  }
+};
+
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const post = await getPostById(id);
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json(post);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch post" });
   }
 };
