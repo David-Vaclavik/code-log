@@ -20,6 +20,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-zinc-350: oklch(78.5% 0.015 286.067);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,8 +32,6 @@
   }
 }
 
-/* body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
+html {
+  scrollbar-gutter: stable;
+}

@@ -11,6 +11,7 @@ export const getPosts = async (req, res) => {
   }
 };
 
+// Tags are optional, but if provided, they should be an array of strings.
 export const createPost = async (req, res) => {
   const { title, content, tags } = req.body;
 

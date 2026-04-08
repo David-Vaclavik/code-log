@@ -1,3 +1,9 @@
+<!-- BEGIN:db-schema-rules -->
+# Database Schema
+
+The full database schema is at `api/src/db/schema.sql`. Read it before writing any DB-related code.
+<!-- END:db-schema-rules -->
+
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 

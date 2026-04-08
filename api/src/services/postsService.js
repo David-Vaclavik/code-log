@@ -10,7 +10,7 @@ export const insertPost = async (title, content, tags) => {
     `INSERT INTO posts (title, content, tags)
      VALUES ($1, $2, $3)
      RETURNING *`,
-    [title, content, tags]
+    [title, content, tags ?? null]
   );
 
   return rows[0];

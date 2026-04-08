@@ -5,8 +5,11 @@ export type Post = {
   id: number;
   title: string;
   content: string;
-  tags: string | null;
+  tags: string[] | null;
+  author: string;
+  published: boolean;
   created_at: string;
+  updated_at: string | null;
 };
 
 export default async function PostList() {
@@ -21,9 +24,9 @@ export default async function PostList() {
           className="flex flex-col hover:bg-zinc-900 p-4 rounded-lg transition-colors"
         >
           <h2 className="text-2xl font-semibold">{post.title}</h2>
-          {post.tags && <p className="text-sm text-zinc-500">Tags: {post.tags}</p>}
+          {post.tags && <p className="text-sm text-zinc-500">Tags: {post.tags.join(", ")}</p>}
 
-          <p className="text-base mt-2">{post.content}</p>
+          <p className="text-base text-zinc-350 mt-2 line-clamp-3">{post.content}</p>
           <p className="text-sm text-zinc-500">{new Date(post.created_at).toLocaleDateString()}</p>
         </Link>
       ))}

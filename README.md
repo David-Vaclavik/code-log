@@ -65,3 +65,13 @@ npm run dev --workspace=admin
 | API     | http://localhost:3000 | `api/.env` → `PORT`   |
 | Client  | http://localhost:3001 | `client/package.json` |
 | Admin   | http://localhost:3002 | `admin/package.json`  |
+
+## 🗄️ Database Schema
+
+Schema is located at `api/src/db/schema.sql`. Run it against your PostgreSQL database to set up the tables.
+
+| Table      | Description                        |
+| ---------- | ---------------------------------- |
+| `posts`    | Blog posts with tags and author    |
+| `comments` | Comments linked to posts and users |
+| `users`    | User accounts                      |
