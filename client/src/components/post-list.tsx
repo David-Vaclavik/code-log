@@ -1,16 +1,5 @@
 import Link from "next/link";
-
-// Used also in: /[id]/page.tsx
-export type Post = {
-  id: number;
-  title: string;
-  content: string;
-  tags: string[] | null;
-  author: string;
-  published: boolean;
-  created_at: string;
-  updated_at: string | null;
-};
+import { Post } from "@/lib/types";
 
 export default async function PostList() {
   const posts = await getPosts();
