@@ -42,11 +42,15 @@ export default function Comments({ postId }: { postId: string }) {
   const handleSubmit = async () => {
     if (!content.trim()) return;
 
+    //! For testing purposes we will use a hardcoded user ID,
+    // but in a real app this would come from the auth context
+    const fakeUserId = 1;
+
     try {
       const res = await fetch(`http://localhost:3000/posts/${postId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({ content, user_id: fakeUserId }),
       });
 
       if (!res.ok) throw new Error("Failed to post comment");

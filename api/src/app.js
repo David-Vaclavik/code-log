@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import postsRoutes from "./routes/posts.js";
+import seedRoutes from "./routes/seed.js";
 
 const app = express();
 
@@ -14,6 +15,10 @@ app.use(
 
 app.use(express.json());
 app.use("/posts", postsRoutes);
+
+if (process.env.NODE_ENV !== "production") {
+  app.use("/seed", seedRoutes);
+}
 
 app.get("/", (req, res) => {
   res.send("API is running");

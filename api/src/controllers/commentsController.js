@@ -11,7 +11,6 @@ export const getComments = async (req, res) => {
     const comments = await getCommentsByPostId(id);
 
     //! We need users to be able to create comments in the DB
-    console.log(comments);
     res.json(comments);
   } catch (err) {
     console.error(err);
@@ -21,12 +20,16 @@ export const getComments = async (req, res) => {
 
 export const createComment = async (req, res) => {
   const { id } = req.params;
-  const { content } = req.body;
+  const { content, user_id } = req.body;
   //! We don't have user authentication yet, so we'll just use a fake user ID for now.
-  const userId = 1; // 👈 TEMP (fake logged-in user)
+  // Fake is hardcoded in the client, commments component
 
   if (!Number.isInteger(Number(id))) {
     return res.status(400).json({ error: "Invalid post ID" });
+  }
+
+  if (!Number.isInteger(Number(user_id))) {
+    return res.status(400).json({ error: "Invalid user ID" });
   }
 
   if (!content?.trim()) {
@@ -34,7 +37,7 @@ export const createComment = async (req, res) => {
   }
 
   try {
-    const comment = await insertComment(id, content, userId);
+    const comment = await insertComment(id, content, user_id);
 
     res.status(201).json(comment);
   } catch (err) {
