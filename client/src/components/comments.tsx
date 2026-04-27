@@ -1,55 +1,30 @@
 "use client";
 
 import { Comment } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function Comments({ postId }: { postId: string }) {
-  const [comments, setComments] = useState<Comment[]>([]);
+export default function Comments({
+  postId,
+  initialComments,
+}: {
+  postId: string;
+  initialComments: Comment[];
+}) {
+  const [comments, setComments] = useState<Comment[]>(initialComments);
   const [content, setContent] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let ignore = false;
-    // setLoading(true);
-
-    const load = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/posts/${postId}/comments`);
-        if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
-
-        const data = await res.json();
-
-        if (ignore) return;
-
-        setComments(data);
-        setLoading(false);
-      } catch (err) {
-        if (!ignore) {
-          setError(err instanceof Error ? err.message : "Failed to load comments");
-          setLoading(false);
-        }
-      }
-    };
-
-    load();
-
-    return () => {
-      ignore = true;
-    };
-  }, [postId]);
 
   const handleSubmit = async () => {
     if (!content.trim()) return;
 
     //! For testing purposes we will use a hardcoded user ID,
-    // but in a real app this would come from the auth context
     const fakeUserId = 1;
 
     try {
       const res = await fetch(`http://localhost:3000/posts/${postId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        // credentials: "include",  // once login is implemented, we will need to include credentials to send cookies
         body: JSON.stringify({ content, user_id: fakeUserId }),
       });
 
@@ -82,6 +57,12 @@ export default function Comments({ postId }: { postId: string }) {
             el.style.height = "auto";
             el.style.height = `${el.scrollHeight}px`;
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
         />
         <button
           onClick={handleSubmit}
@@ -93,9 +74,9 @@ export default function Comments({ postId }: { postId: string }) {
 
       {error && <p className="text-red-400">{error}</p>}
 
-      {loading && <p className="text-zinc-500">Loading comments...</p>}
+      {/* {loading && <p className="text-zinc-500">Loading comments...</p>} */}
 
-      {!loading && comments.length === 0 && <p className="text-zinc-500">No comments yet.</p>}
+      {comments.length === 0 && <p className="text-zinc-500">No comments yet.</p>}
 
       <ul className="flex flex-col gap-6">
         {comments.map((comment) => (

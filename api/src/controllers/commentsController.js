@@ -10,7 +10,6 @@ export const getComments = async (req, res) => {
   try {
     const comments = await getCommentsByPostId(id);
 
-    //! We need users to be able to create comments in the DB
     res.json(comments);
   } catch (err) {
     console.error(err);
@@ -21,6 +20,7 @@ export const getComments = async (req, res) => {
 export const createComment = async (req, res) => {
   const { id } = req.params;
   const { content, user_id } = req.body;
+  // const userId = req.userId; //! This will be set by the auth middleware once we have it implemented.
   //! We don't have user authentication yet, so we'll just use a fake user ID for now.
   // Fake is hardcoded in the client, commments component
 

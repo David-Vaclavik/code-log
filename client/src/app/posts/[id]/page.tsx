@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const post = await getPost(id);
+  const comments = await getComments(id);
 
   return (
     <main className="flex flex-1 w-full max-w-3xl flex-col items-center gap-16 sm:items-start">
@@ -21,7 +22,7 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
       </div>
 
       {/* comments */}
-      <Comments postId={id} />
+      <Comments postId={id} initialComments={comments} />
     </main>
   );
 }
@@ -33,6 +34,16 @@ async function getPost(id: string): Promise<Post> {
 
   if (!res.ok) {
     throw new Error("Failed to fetch post");
+  }
+
+  return res.json();
+}
+
+async function getComments(postId: string) {
+  const res = await fetch(`http://localhost:3000/posts/${postId}/comments`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch comments");
   }
 
   return res.json();

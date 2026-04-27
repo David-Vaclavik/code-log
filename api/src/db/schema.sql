@@ -39,3 +39,7 @@ ON UPDATE NO ACTION ON DELETE CASCADE;
 ALTER TABLE "comments"
 ADD FOREIGN KEY("user_id") REFERENCES "users"("id")
 ON UPDATE NO ACTION ON DELETE CASCADE;
+
+-- Drop table users later and create schema with email and password_hash columns
+ALTER TABLE users ADD COLUMN email VARCHAR(255) UNIQUE NOT NULL;
+ALTER TABLE users ADD COLUMN password_hash VARCHAR(255) NOT NULL;

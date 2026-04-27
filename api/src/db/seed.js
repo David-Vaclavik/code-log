@@ -12,10 +12,10 @@ export const seedDatabase = async () => {
 
     // Users
     await client.query(`
-      INSERT INTO users (name) VALUES
-        ('David Václavík'),
-        ('Jane Doe'),
-        ('John Smith')
+      INSERT INTO users (name, email, password_hash) VALUES
+        ('David Václavík', 'david@example.com', 'password_hash_1'),
+        ('Jane Doe', 'jane@example.com', 'password_hash_2'),
+        ('John Smith', 'john@example.com', 'password_hash_3')
     `);
 
     // Posts
