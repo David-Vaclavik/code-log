@@ -28,3 +28,9 @@ export const hashPassword = async (plain) => {
   // <22-char-salt> - randomly generated salt
   // <31-char-hash> - hashed password
 };
+
+//TODO: do not return password_hash
+export const findUserById = async (id) => {
+  const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+  return rows[0];
+};

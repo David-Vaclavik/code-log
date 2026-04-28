@@ -18,14 +18,15 @@ export default function Comments({
     if (!content.trim()) return;
 
     //! For testing purposes we will use a hardcoded user ID,
-    const fakeUserId = 1;
+    // const fakeUserId = 1;
 
     try {
       const res = await fetch(`http://localhost:3000/posts/${postId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // credentials: "include",  // once login is implemented, we will need to include credentials to send cookies
-        body: JSON.stringify({ content, user_id: fakeUserId }),
+        credentials: "include", // once login is implemented, we will need to include credentials to send cookies
+        // body: JSON.stringify({ content, user_id: fakeUserId }),
+        body: JSON.stringify({ content }),
       });
 
       if (!res.ok) throw new Error("Failed to post comment");

@@ -4,6 +4,7 @@ import {
   createUser,
   verifyPassword,
   hashPassword,
+  findUserById,
 } from "../services/authService.js";
 
 const COOKIE_OPTIONS = {
@@ -74,4 +75,17 @@ export const login = async (req, res) => {
 export const logout = (_req, res) => {
   res.clearCookie("token", COOKIE_OPTIONS);
   res.json({ message: "Logged out" });
+};
+
+export const getUser = async (req, res) => {
+  try {
+    // req.userId is set by authenticate middleware
+    const user = await findUserById(req.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json({ user: { id: user.id, name: user.name, email: user.email } });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch user" });
+  }
 };
