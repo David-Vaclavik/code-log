@@ -20,3 +20,11 @@ export type Comment = {
   created_at: string;
   updated_at: string | null;
 };
+
+// Used in header.tsx, setup in auth/me endpoint
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+};

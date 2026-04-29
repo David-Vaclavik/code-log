@@ -6,7 +6,7 @@ This is a **monorepo** containing:
 
 - `api/` – Node.js + Express backend with PostgreSQL
 - `client/` – Next.js frontend for users
-- `admin/` – Next.js admin dashboard
+- `admin/` – Next.js admin dashboard and post editor
 
 ---
 
@@ -23,11 +23,6 @@ codelog/
 ```
 
 ---
-
-## ⚙️ Prerequisites
-
-- Node.js v18+
-- PostgreSQL
 
 ## 🚀 Getting Started
 

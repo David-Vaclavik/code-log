@@ -1,4 +1,5 @@
 import pool from "./pool.js";
+import bcrypt from "bcrypt";
 
 export const seedDatabase = async () => {
   const client = await pool.connect(); // must use .release() at the end of the transaction
@@ -11,12 +12,39 @@ export const seedDatabase = async () => {
     await client.query("TRUNCATE users, posts, comments RESTART IDENTITY CASCADE");
 
     // Users
-    await client.query(`
-      INSERT INTO users (name, email, password_hash) VALUES
-        ('David Václavík', 'david@example.com', 'password_hash_1'),
-        ('Jane Doe', 'jane@example.com', 'password_hash_2'),
-        ('John Smith', 'john@example.com', 'password_hash_3')
-    `);
+    // await client.query(`
+    //   INSERT INTO users (name, email, password_hash) VALUES
+    //     ('David Václavík', 'david@example.com', 'password_hash_1'),
+    //     ('Jane Doe', 'jane@example.com', 'password_hash_2'),
+    //     ('John Smith', 'john@example.com', 'password_hash_3')
+    // `);
+
+    // Hash passwords before inserting
+    const hash = (plain) => bcrypt.hash(plain, 12);
+
+    // Admin insert
+    await client.query(
+      `INSERT INTO users (name, email, password_hash, is_admin) VALUES
+        ($1, $2, $3, $4)`,
+      ["David Václavík", "david@example.com", await hash("asd"), true]
+    );
+
+    // Normal users
+    await client.query(
+      `INSERT INTO users (name, email, password_hash) VALUES
+        ($1, $2, $3), ($4, $5, $6), ($7, $8, $9)`,
+      [
+        "Raja Sykes",
+        "raja@example.com",
+        await hash("password1"),
+        "Jane Doe",
+        "jane@example.com",
+        await hash("password2"),
+        "John Smith",
+        "john@example.com",
+        await hash("password3"),
+      ]
+    );
 
     // Posts
     await client.query(`

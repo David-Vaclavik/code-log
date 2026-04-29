@@ -29,6 +29,8 @@ if (process.env.NODE_ENV !== "production") {
   app.use("/seed", seedRoutes);
 }
 
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
 app.get("/", (req, res) => {
   res.send("API is running");
 });

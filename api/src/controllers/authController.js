@@ -11,11 +11,13 @@ const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production", // HTTPS only in prod
   sameSite: "strict",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms - same as token expiration
 };
 
-const signToken = (userId) =>
-  jwt.sign({ sub: userId }, process.env.JWT_SECRET, {
+// Defines how to create a token
+//! for now we don't use isAdmin anywhere, prepared for the admin FE
+const signToken = (userId, isAdmin = false) =>
+  jwt.sign({ sub: userId, isAdmin: isAdmin }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
   });
 
@@ -54,7 +56,7 @@ export const login = async (req, res) => {
   try {
     const user = await findUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ error: "User doesn't exist" });
+      return res.status(404).json({ error: "User doesn't exist" });
     }
 
     const valid = await verifyPassword(password, user.password_hash);
@@ -62,10 +64,10 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = signToken(user.id);
+    const token = signToken(user.id, user.is_admin);
 
     res.cookie("token", token, COOKIE_OPTIONS);
-    res.json({ user: { id: user.id, name: user.name, email: user.email } });
+    res.json({ user: { id: user.id, name: user.name, email: user.email, isAdmin: user.is_admin } });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to login" });
@@ -79,11 +81,12 @@ export const logout = (_req, res) => {
 
 export const getUser = async (req, res) => {
   try {
-    // req.userId is set by authenticate middleware
     const user = await findUserById(req.userId);
     if (!user) return res.status(404).json({ error: "User not found" });
+    // console.log(user);
 
-    res.json({ user: { id: user.id, name: user.name, email: user.email } });
+    // same response as in login above
+    res.json({ user: { id: user.id, name: user.name, email: user.email, isAdmin: user.is_admin } });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to fetch user" });

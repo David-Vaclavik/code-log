@@ -25,7 +25,7 @@ export default function LogoutPage() {
       return;
     }
 
-    console.log(data);
+    // console.log(data);
     router.push("/");
     router.refresh();
   };

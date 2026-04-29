@@ -10,11 +10,12 @@ export const authenticate = (req, res, next) => {
   try {
     //! always specify the algorithm to prevent security vulnerabilities
     const payload = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ["HS256"] });
-    // payload.sub is the userId we set when signing the token
-    // currently not used, need to implement user registration and login first
-    req.userId = payload.sub; // available in all downstream controllers
+    // payload.sub is the userId we set when signing the token in the authController.js/signToken
+    req.userId = payload.sub; // available in all downstream controllers that use authenticate.js
+    req.isAdmin = payload.isAdmin;
     next();
   } catch (err) {
+    console.error(err);
     return res.status(401).json({ error: "Invalid or expired token" });
   }
 };

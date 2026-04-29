@@ -1,3 +1,4 @@
+import { User } from "@/lib/types";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
@@ -6,7 +7,7 @@ export default async function Header() {
   const token = cookieStore.get("token")?.value;
   // console.log(token);
 
-  let user = null;
+  let user: User | null = null;
   if (token) {
     const res = await fetch("http://localhost:3000/auth/me", {
       headers: { Cookie: `token=${token}` }, // forward the cookie to the API
@@ -30,6 +31,8 @@ export default async function Header() {
       ) : (
         <h3 className="text-zinc-300">No user logged</h3>
       )}
+
+      {user?.isAdmin && <h3>ADMIN</h3>}
 
       <nav className="flex gap-2">
         <Link
