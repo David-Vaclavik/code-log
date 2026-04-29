@@ -5,7 +5,7 @@ export const getAllPosts = async () => {
   return rows;
 };
 
-export const insertPost = async (title, content, tags) => {
+export const insertPost = async (title: string, content: string, tags?: string[]) => {
   const { rows } = await pool.query(
     `INSERT INTO posts (title, content, tags)
      VALUES ($1, $2, $3)
@@ -16,7 +16,7 @@ export const insertPost = async (title, content, tags) => {
   return rows[0];
 };
 
-export const getPostById = async (id) => {
+export const getPostById = async (id: number) => {
   const { rows } = await pool.query("SELECT * FROM posts WHERE id = $1", [id]);
   return rows[0];
 };

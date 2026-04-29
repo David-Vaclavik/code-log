@@ -1,7 +1,13 @@
-import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-export const authenticate = (req, res, next) => {
-  const token = req.cookies?.token;
+interface TokenPayload extends JwtPayload {
+  userId: number;
+  isAdmin: boolean;
+}
+
+export const authenticate = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies.token; // Assuming the token is sent in a cookie named "token"
 
   if (!token) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -9,10 +15,13 @@ export const authenticate = (req, res, next) => {
 
   try {
     //! always specify the algorithm to prevent security vulnerabilities
-    const payload = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ["HS256"] });
-    // payload.sub is the userId we set when signing the token in the authController.js/signToken
-    req.userId = payload.sub; // available in all downstream controllers that use authenticate.js
+    const payload = jwt.verify(token, process.env.JWT_SECRET!, {
+      algorithms: ["HS256"],
+    }) as TokenPayload;
+    // payload.userId and payload.isAdmin are the values we set when signing the token in the authController.js/signToken
+    req.userId = payload.userId;
     req.isAdmin = payload.isAdmin;
+
     next();
   } catch (err) {
     console.error(err);

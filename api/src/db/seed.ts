@@ -20,7 +20,7 @@ export const seedDatabase = async () => {
     // `);
 
     // Hash passwords before inserting
-    const hash = (plain) => bcrypt.hash(plain, 12);
+    const hash = (plain: string) => bcrypt.hash(plain, 12);
 
     // Admin insert
     await client.query(

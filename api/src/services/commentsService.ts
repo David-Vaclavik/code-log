@@ -1,6 +1,6 @@
 import pool from "../db/pool.js";
 
-export const getCommentsByPostId = async (postId) => {
+export const getCommentsByPostId = async (postId: number) => {
   const { rows } = await pool.query(
     `SELECT comments.*, users.name AS user_name
      FROM comments
@@ -13,7 +13,7 @@ export const getCommentsByPostId = async (postId) => {
   return rows;
 };
 
-export const insertComment = async (postId, content, userId) => {
+export const insertComment = async (postId: number, content: string, userId: number) => {
   const { rows } = await pool.query(
     `INSERT INTO comments (post_id, content, user_id)
      VALUES ($1, $2, $3)

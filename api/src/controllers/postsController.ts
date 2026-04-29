@@ -1,8 +1,20 @@
+import { Request, Response } from "express";
 import { getAllPosts, getPostById, insertPost } from "../services/postsService.js";
 
-export const getPosts = async (req, res) => {
+type Post = {
+  id: number;
+  title: string;
+  content: string;
+  tags: string[] | null;
+  author: string;
+  published: boolean;
+  created_at: Date;
+  updated_at: Date | null;
+};
+
+export const getPosts = async (req: Request, res: Response) => {
   try {
-    const posts = await getAllPosts();
+    const posts: Post[] = await getAllPosts();
 
     res.json(posts);
   } catch (err) {
@@ -12,7 +24,7 @@ export const getPosts = async (req, res) => {
 };
 
 // Tags are optional, but if provided, they should be an array of strings.
-export const createPost = async (req, res) => {
+export const createPost = async (req: Request, res: Response) => {
   const { title, content, tags } = req.body;
 
   if (!title?.trim() || !content?.trim()) {
@@ -29,11 +41,17 @@ export const createPost = async (req, res) => {
   }
 };
 
-export const getPost = async (req, res) => {
-  const { id } = req.params;
+export const getPost = async (req: Request, res: Response) => {
+  const postId = Number(req.params.id); // params are always string
+
+  if (isNaN(postId)) {
+    return res.status(400).json({ error: "Invalid post ID" });
+  }
 
   try {
-    const post = await getPostById(id);
+    // also pg doesn't care if we pass a string or number as id, it will work either way,
+    // but we want to validate that it's a number before querying the database
+    const post = await getPostById(postId);
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });

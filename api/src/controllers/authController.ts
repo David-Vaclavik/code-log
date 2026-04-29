@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import {
   findUserByEmail,
@@ -12,16 +13,16 @@ const COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV === "production", // HTTPS only in prod
   sameSite: "strict",
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms - same as token expiration
-};
+} as const;
 
 // Defines how to create a token
 //! for now we don't use isAdmin anywhere, prepared for the admin FE
-const signToken = (userId, isAdmin = false) =>
-  jwt.sign({ sub: userId, isAdmin: isAdmin }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
+const signToken = (userId: number, isAdmin = false) =>
+  jwt.sign({ userId, isAdmin }, process.env.JWT_SECRET!, {
+    expiresIn: (process.env.JWT_EXPIRES_IN ?? "7d") as jwt.SignOptions["expiresIn"],
   });
 
-export const register = async (req, res) => {
+export const register = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
   if (!name?.trim() || !email?.trim() || !password?.trim()) {
@@ -46,7 +47,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!email?.trim() || !password?.trim()) {
@@ -74,14 +75,14 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (_req, res) => {
+export const logout = (_req: Request, res: Response) => {
   res.clearCookie("token", COOKIE_OPTIONS);
   res.json({ message: "Logged out" });
 };
 
-export const getUser = async (req, res) => {
+export const getUser = async (req: Request, res: Response) => {
   try {
-    const user = await findUserById(req.userId);
+    const user = await findUserById(req.userId!);
     if (!user) return res.status(404).json({ error: "User not found" });
     // console.log(user);
 

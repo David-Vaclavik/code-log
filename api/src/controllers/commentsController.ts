@@ -1,6 +1,7 @@
+import { Request, Response } from "express";
 import { getCommentsByPostId, insertComment } from "../services/commentsService.js";
 
-export const getComments = async (req, res) => {
+export const getComments = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   if (!Number.isInteger(Number(id))) {
@@ -8,7 +9,7 @@ export const getComments = async (req, res) => {
   }
 
   try {
-    const comments = await getCommentsByPostId(id);
+    const comments = await getCommentsByPostId(Number(id));
 
     res.json(comments);
   } catch (err) {
@@ -17,7 +18,7 @@ export const getComments = async (req, res) => {
   }
 };
 
-export const createComment = async (req, res) => {
+export const createComment = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { content } = req.body;
   const userId = req.userId; // This is set by the authenticate middleware.
@@ -35,7 +36,7 @@ export const createComment = async (req, res) => {
   }
 
   try {
-    const comment = await insertComment(id, content, userId);
+    const comment = await insertComment(Number(id), content, Number(userId));
 
     res.status(201).json(comment);
   } catch (err) {

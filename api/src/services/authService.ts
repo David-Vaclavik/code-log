@@ -1,12 +1,12 @@
 import pool from "../db/pool.js";
 import bcrypt from "bcrypt";
 
-export const findUserByEmail = async (email) => {
+export const findUserByEmail = async (email: string) => {
   const { rows } = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
   return rows[0];
 };
 
-export const createUser = async (name, email, passwordHash) => {
+export const createUser = async (name: string, email: string, passwordHash: string) => {
   const { rows } = await pool.query(
     `INSERT INTO users (name, email, password_hash)
      VALUES ($1, $2, $3)
@@ -16,11 +16,11 @@ export const createUser = async (name, email, passwordHash) => {
   return rows[0];
 };
 
-export const verifyPassword = async (plain, hash) => {
+export const verifyPassword = async (plain: string, hash: string) => {
   return bcrypt.compare(plain, hash);
 };
 
-export const hashPassword = async (plain) => {
+export const hashPassword = async (plain: string) => {
   return bcrypt.hash(plain, 12);
   // $2b$12$<22-char-salt><31-char-hash>
   // $2b - bcrypt version
@@ -29,7 +29,7 @@ export const hashPassword = async (plain) => {
   // <31-char-hash> - hashed password
 };
 
-export const findUserById = async (id) => {
+export const findUserById = async (id: number) => {
   const { rows } = await pool.query("SELECT id, name, email, is_admin FROM users WHERE id = $1", [
     id,
   ]);
