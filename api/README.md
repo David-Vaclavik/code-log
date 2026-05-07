@@ -4,6 +4,17 @@ Express + PostgreSQL REST API for the CodeLog blog platform.
 
 Runs on `http://localhost:3000` by default.
 
+#### Installing new dependencies
+
+```bash
+npm install <package> --workspace=api
+
+# or
+
+cd api
+npm install <package>
+```
+
 ---
 
 ## 📁 Structure

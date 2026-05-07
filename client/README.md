@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CodeLog Client
 
-## Getting Started
+Next.js frontend for the CodeLog developer blog platform.
 
-First, run the development server:
+Runs on `http://localhost:3001` by default.
+
+---
+
+## 📁 Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx              # Root layout — fonts, Header, global styles
+│   ├── page.tsx                # Home page — renders PostList
+│   ├── auth/
+│   │   ├── login/page.tsx      # Login form
+│   │   ├── logout/page.tsx     # Logout action + redirect
+│   │   └── register/page.tsx   # Register form
+│   └── posts/
+│       ├── page.tsx            # All posts listing
+│       └── [id]/page.tsx       # Single post with comments
+├── components/
+│   ├── header.tsx              # Server component — reads auth cookie, shows user
+│   ├── post-list.tsx           # Post cards listing
+│   └── comments.tsx            # Comment display + submission form (client)
+└── lib/
+    └── types.ts                # Shared TypeScript types (Post, Comment, User)
+```
+
+---
+
+## ⚙️ Environment
+
+The client expects the API to be running at `http://localhost:3000`. No `.env` file is required for local development — the API URL is hardcoded for dev.
+
+---
+
+## 🚀 Running
+
+```bash
+npm run dev --workspace=client
+```
+
+Or from inside the `client` folder:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔗 Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route            | Description                          |
+| ---------------- | ------------------------------------ |
+| `/`              | Home — lists all published posts     |
+| `/posts`         | Full post listing                    |
+| `/posts/:id`     | Single post with comments            |
+| `/auth/register` | Registration form                    |
+| `/auth/login`    | Login form                           |
+| `/auth/logout`   | Clears session and redirects to home |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔐 Authentication
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Auth is cookie-based — the API sets an `httpOnly` JWT cookie on login/register. The client:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Sends `credentials: "include"` on all authenticated fetch calls
+- Reads the cookie server-side in `header.tsx` via `next/headers` to show the logged-in user
+- Calls `router.refresh()` after login/logout to re-render server components
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧱 Tech
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Tool         | Version | Notes                         |
+| ------------ | ------- | ----------------------------- |
+| Next.js      | 16.2.2  | App Router, server components |
+| React        | 19.2.4  | React Compiler enabled        |
+| Tailwind CSS | v4      | PostCSS plugin                |
+| TypeScript   | ^5      | Strict mode                   |
