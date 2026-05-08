@@ -7,7 +7,7 @@ export default function Home() {
       <h1 className="text-3xl font-bold">Admin Landing Page</h1>
 
       <Button className="mt-4" asChild>
-        <Link href="/">Login</Link>
+        <Link href="/auth/login">Login</Link>
       </Button>
     </div>
   );

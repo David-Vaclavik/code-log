@@ -128,3 +128,19 @@
     @apply font-sans;
   }
 }
+
+@layer base {
+  /* body {
+    @apply bg-zinc-50 text-zinc-900 dark:bg-black dark:text-zinc-100 py-16 px-8;
+  } */
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-2xl font-semibold;
+  }
+  h3 {
+    @apply text-xl font-medium;
+  }
+}
