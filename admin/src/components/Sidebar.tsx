@@ -7,6 +7,7 @@ export default function Sidebar() {
     <div className="flex flex-col gap-8 p-8 min-h-full bg-zinc-800">
       <h2>Admin Dashboard</h2>
 
+      {/* Auth Status - displays the current user and admin status */}
       <AuthStatus />
 
       <Button className="text-xl justify-start" variant={"link"} asChild>
@@ -25,6 +26,18 @@ export default function Sidebar() {
         </Button>
         <Button className="text-xl justify-start" variant={"link"} asChild>
           <Link href="/auth/logout">Logout</Link>
+        </Button>
+      </div>
+
+      {/* Draft Section */}
+      <div className="flex flex-col gap-2">
+        <h2>Draft</h2>
+
+        <Button className="text-xl justify-start" variant={"link"} asChild>
+          <Link href="/draft">Drafts List</Link>
+        </Button>
+        <Button className="text-xl justify-start" variant={"link"} asChild>
+          <Link href="/draft/1">Draft 1</Link>
         </Button>
       </div>
     </div>

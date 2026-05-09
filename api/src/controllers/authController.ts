@@ -17,6 +17,7 @@ const COOKIE_OPTIONS = {
 
 // Defines how to create a token
 //! for now we don't use isAdmin anywhere, prepared for the admin FE
+//    - used in AuthStatus component to display if the user is admin or not
 const signToken = (userId: number, isAdmin = false) =>
   jwt.sign({ userId, isAdmin }, process.env.JWT_SECRET!, {
     expiresIn: (process.env.JWT_EXPIRES_IN ?? "7d") as jwt.SignOptions["expiresIn"],

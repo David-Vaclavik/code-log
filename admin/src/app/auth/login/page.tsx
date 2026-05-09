@@ -31,8 +31,9 @@ export default function LoginPage() {
     });
 
     const data = await res.json();
-    // password: Pa$$w0rd! - normal user
+    // password: Pa$$w0rd! - normal user vezucizy@mailinator.com - asd
     // password: asd - admin user david@example.com
+    // vixu@mailinator.com
 
     // if (!res.ok) throw new Error("Failed to post comment");
     if (!res.ok) {
@@ -41,6 +42,7 @@ export default function LoginPage() {
     }
 
     //TODO: there seems to be a history bug
+    //TODO: also add title for different pages, helpful for testing and also for real use
     router.push("/");
     router.refresh();
   };
