@@ -14,7 +14,8 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
         <h1 className="text-5xl text-zinc-200">{post.title}</h1>
         <p className="text-base text-zinc-500">By {post.author}</p>
         <p className="text-sm text-zinc-500 mb-8">
-          {new Date(post.created_at).toLocaleDateString("cs-CZ")}
+          Created: {new Date(post.created_at).toLocaleDateString("cs-CZ")} - Updated:{" "}
+          {post.updated_at ? new Date(post.updated_at).toLocaleDateString("cs-CZ") : "N/A"}
         </p>
 
         {/* content */}

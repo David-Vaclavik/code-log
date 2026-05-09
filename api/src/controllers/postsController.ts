@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllPosts, getPostById, insertPost } from "../services/postsService.js";
+import { getAllPosts, getPostById, insertPost, updatePost } from "../services/postsService.js";
 
 type Post = {
   id: number;
@@ -61,5 +61,30 @@ export const getPost = async (req: Request, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch post" });
+  }
+};
+
+// Tags are optional, but if provided, they should be an array of strings.
+export const editPost = async (req: Request, res: Response) => {
+  const postId = Number(req.params.id); // params are always string
+  if (isNaN(postId)) {
+    return res.status(400).json({ error: "Invalid post ID" });
+  }
+
+  const { title, content, tags } = req.body;
+  if (!title?.trim() || !content?.trim()) {
+    return res.status(400).json({ error: "Title and content are required" });
+  }
+
+  try {
+    const post = await updatePost(postId, title, content, tags);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json(post);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update post" });
   }
 };

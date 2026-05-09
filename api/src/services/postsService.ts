@@ -20,3 +20,19 @@ export const getPostById = async (id: number) => {
   const { rows } = await pool.query("SELECT * FROM posts WHERE id = $1", [id]);
   return rows[0];
 };
+
+export const updatePost = async (id: number, title: string, content: string, tags?: string[]) => {
+  const { rows } = await pool.query(
+    `UPDATE posts
+     SET 
+      title = $1,
+      content = $2,
+      tags = $3,
+      updated_at = NOW()
+     WHERE id = $4
+     RETURNING *`,
+    [title, content, tags ?? null, id]
+  );
+
+  return rows[0];
+};

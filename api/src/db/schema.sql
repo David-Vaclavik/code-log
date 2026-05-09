@@ -42,3 +42,5 @@ ON UPDATE NO ACTION ON DELETE CASCADE;
 ALTER TABLE "comments"
 ADD FOREIGN KEY("user_id") REFERENCES "users"("id")
 ON UPDATE NO ACTION ON DELETE CASCADE;
+
+-- TODO: convert all TIMESTAMP to TIMESTAMPTZ, so we have timezone support, and we can display dates in user's local timezone on frontend
