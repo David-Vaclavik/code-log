@@ -3,6 +3,7 @@ import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -39,10 +40,12 @@ export default function RootLayout({
           "bg-black text-zinc-100" // This is in client in global.css layer base - py-16 px-8
         )}
       >
-        <nav>
-          <Sidebar />
-        </nav>
-        <main className="p-8">{children}</main>
+        <TooltipProvider>
+          <nav>
+            <Sidebar />
+          </nav>
+          <main className="p-8 flex-1">{children}</main>
+        </TooltipProvider>
       </body>
     </html>
   );
