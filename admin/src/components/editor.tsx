@@ -20,7 +20,7 @@ export default function PostEditor() {
         onChange={setValue}
         className="min-h-120 w-full"
         editorContentClassName="p-5 flex flex-1"
-        output="text"
+        output="json"
         placeholder="Write your post..."
         autofocus={true}
         editable={true}

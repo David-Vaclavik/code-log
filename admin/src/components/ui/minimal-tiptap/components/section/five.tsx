@@ -1,33 +1,34 @@
-import * as React from "react"
-import type { Editor } from "@tiptap/react"
-import type { FormatAction } from "../../types"
-import type { toggleVariants } from "@/components/ui/toggle"
-import type { VariantProps } from "class-variance-authority"
+import * as React from "react";
+import type { Editor } from "@tiptap/react";
+import type { FormatAction } from "../../types";
+import type { toggleVariants } from "@/components/ui/toggle";
+import type { VariantProps } from "class-variance-authority";
 import {
   CaretDownIcon,
-  CodeIcon,
+  // CodeIcon,
   DividerHorizontalIcon,
   PlusIcon,
   QuoteIcon,
-} from "@radix-ui/react-icons"
-import { LinkEditPopover } from "../link/link-edit-popover"
-import { ImageEditDialog } from "../image/image-edit-dialog"
-import { ToolbarSection } from "../toolbar-section"
+} from "@radix-ui/react-icons";
+import { LinkEditPopover } from "../link/link-edit-popover";
+import { ImageEditDialog } from "../image/image-edit-dialog";
+import { ToolbarSection } from "../toolbar-section";
+import { FileCode } from "lucide-react";
 
-type InsertElementAction = "codeBlock" | "blockquote" | "horizontalRule"
+type InsertElementAction = "codeBlock" | "blockquote" | "horizontalRule";
 interface InsertElement extends FormatAction {
-  value: InsertElementAction
+  value: InsertElementAction;
 }
 
 const formatActions: InsertElement[] = [
   {
     value: "codeBlock",
     label: "Code block",
-    icon: <CodeIcon className="size-5" />,
+    // icon: <CodeIcon className="size-5" />,
+    icon: <FileCode className="size-[20px]" strokeWidth={1.6} />, // replaced radix icon above with a lucide
     action: (editor) => editor.chain().focus().toggleCodeBlock().run(),
     isActive: (editor) => editor.isActive("codeBlock"),
-    canExecute: (editor) =>
-      editor.can().chain().focus().toggleCodeBlock().run(),
+    canExecute: (editor) => editor.can().chain().focus().toggleCodeBlock().run(),
     shortcuts: ["mod", "alt", "C"],
   },
   {
@@ -36,8 +37,7 @@ const formatActions: InsertElement[] = [
     icon: <QuoteIcon className="size-5" />,
     action: (editor) => editor.chain().focus().toggleBlockquote().run(),
     isActive: (editor) => editor.isActive("blockquote"),
-    canExecute: (editor) =>
-      editor.can().chain().focus().toggleBlockquote().run(),
+    canExecute: (editor) => editor.can().chain().focus().toggleBlockquote().run(),
     shortcuts: ["mod", "shift", "B"],
   },
   {
@@ -46,16 +46,15 @@ const formatActions: InsertElement[] = [
     icon: <DividerHorizontalIcon className="size-5" />,
     action: (editor) => editor.chain().focus().setHorizontalRule().run(),
     isActive: () => false,
-    canExecute: (editor) =>
-      editor.can().chain().focus().setHorizontalRule().run(),
+    canExecute: (editor) => editor.can().chain().focus().setHorizontalRule().run(),
     shortcuts: ["mod", "alt", "-"],
   },
-]
+];
 
 interface SectionFiveProps extends VariantProps<typeof toggleVariants> {
-  editor: Editor
-  activeActions?: InsertElementAction[]
-  mainActionCount?: number
+  editor: Editor;
+  activeActions?: InsertElementAction[];
+  mainActionCount?: number;
 }
 
 export const SectionFive: React.FC<SectionFiveProps> = ({
@@ -85,9 +84,9 @@ export const SectionFive: React.FC<SectionFiveProps> = ({
         variant={variant}
       />
     </>
-  )
-}
+  );
+};
 
-SectionFive.displayName = "SectionFive"
+SectionFive.displayName = "SectionFive";
 
-export default SectionFive
+export default SectionFive;
