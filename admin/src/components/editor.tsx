@@ -19,15 +19,15 @@ export default function PostEditor() {
         value={value}
         onChange={setValue}
         className="min-h-120 w-full"
-        editorContentClassName="p-5"
+        editorContentClassName="p-5 flex flex-1"
         output="text"
         placeholder="Write your post..."
         autofocus={true}
         editable={true}
-        editorClassName="focus:outline-none"
+        editorClassName="focus:outline-none flex-1"
       />
 
-      <button onClick={handleSubmit}>Submit</button>
+      {/* <button onClick={handleSubmit}>Submit</button> */}
 
       <Button onClick={handleSubmit} variant="outline">
         Submit
