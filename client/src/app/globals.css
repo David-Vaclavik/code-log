@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @layer base {
   body {
@@ -34,4 +35,30 @@
 
 html {
   scrollbar-gutter: stable;
+}
+
+/* Below we modify the default behavior of tailwind typography plugin: prose */
+.prose code::before {
+  content: none;
+}
+.prose code::after {
+  content: none;
+}
+
+/* inline code only */
+.prose :not(pre) > code {
+  background-color: theme("colors.zinc.800");
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+}
+
+/* code blocks */
+.prose pre {
+  background-color: theme("colors.zinc.900");
+}
+
+/* reset prose-code so it doesn't bleed into pre */
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
 }
