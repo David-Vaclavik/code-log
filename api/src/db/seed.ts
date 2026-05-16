@@ -84,6 +84,409 @@ export const seedDatabase = async () => {
         ('Resource Names for Enterprise TypeScript Monorepos', 'Multi-service TypeScript applications have a naming problem. Every service invents its own way to reference resources. One team builds paths with template literals, another passes loose IDs through function arguments, a third hardcodes service prefixes as magic strings. It works until someone joins the team and asks “how do I construct a resource path here?” and gets a different answer depending on which file they are looking at.', ARRAY['TypeScript', 'React'])
     `);
 
+    // Post with content_json (Tiptap JSON)
+    await client.query(
+      `INSERT INTO posts (title, content, tags, published, content_json) VALUES ($1, $2, $3, $4, $5)`,
+      [
+        "Tiptap Editor JSON Content Example",
+        "Section 1: Headings Section 2: Bold, Italic, Underline, Strikethrough, Code Section 3: Colors Section 4: Lists Section 5: Links",
+        ["Tiptap", "Editor", "JSON", "Example"],
+        true,
+        JSON.stringify({
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Section 1:",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                level: 1,
+              },
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "textStyle",
+                      attrs: {
+                        color: null,
+                      },
+                    },
+                  ],
+                  text: "Heading 1",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                level: 3,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Heading 2",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                level: 3,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Heading 3",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                level: 4,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Heading 4",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                level: 5,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Heading 5",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                level: 6,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Heading 6",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Section 2:",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "bold",
+                    },
+                  ],
+                  text: "Bold text",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "textStyle",
+                      attrs: {
+                        color: null,
+                      },
+                    },
+                    {
+                      type: "italic",
+                    },
+                  ],
+                  text: "Italic text",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "textStyle",
+                      attrs: {
+                        color: null,
+                      },
+                    },
+                    {
+                      type: "underline",
+                    },
+                  ],
+                  text: "Underline text",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "textStyle",
+                      attrs: {
+                        color: null,
+                      },
+                    },
+                    {
+                      type: "strike",
+                    },
+                  ],
+                  text: "Strikethrough text",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "code",
+                    },
+                  ],
+                  text: "Code inlinte text",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Section 3:",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Color not implemented yet",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "textStyle",
+                      attrs: {
+                        color: null,
+                      },
+                    },
+                  ],
+                  text: "Section 4:",
+                },
+              ],
+            },
+            {
+              type: "orderedList",
+              attrs: {
+                start: 1,
+                type: null,
+              },
+              content: [
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      content: [
+                        {
+                          type: "text",
+                          text: "number one list item",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      content: [
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "textStyle",
+                              attrs: {
+                                color: null,
+                              },
+                            },
+                          ],
+                          text: "number two list item",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "bulletList",
+              content: [
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      content: [
+                        {
+                          type: "text",
+                          text: "Bullet list item - one",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      content: [
+                        {
+                          type: "text",
+                          text: "Bullet list item - two",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Section 5:",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "link",
+                      attrs: {
+                        href: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/spellcheck",
+                        target: "_blank",
+                        rel: "noopener noreferrer nofollow",
+                        class: "link",
+                        title: null,
+                      },
+                    },
+                  ],
+                  text: "MDN spellcheck",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+            },
+          ],
+        }),
+      ]
+    );
+
+    // Post with horizontalRule and blockquote
+    await client.query(
+      `INSERT INTO posts (title, content, tags, published, content_json) VALUES ($1, $2, $3, $4, $5)`,
+      [
+        "Tiptap Editor JSON Content Example 2",
+        "normal text, horizontal rule, blockquote",
+        ["Tiptap", "Editor", "JSON", "Example"],
+        true,
+        JSON.stringify({
+          type: "doc",
+          content: [
+            { type: "paragraph", content: [{ type: "text", text: "normal text" }] },
+            { type: "horizontalRule" },
+            { type: "paragraph", content: [{ type: "text", text: "normal text" }] },
+            {
+              type: "blockquote",
+              content: [
+                { type: "paragraph", content: [{ type: "text", text: "Block quote" }] },
+                { type: "paragraph", content: [{ type: "text", text: "also Blockquote" }] },
+                { type: "paragraph", content: [{ type: "text", text: "also Blockquote" }] },
+              ],
+            },
+            { type: "paragraph", content: [{ type: "text", text: "normal text" }] },
+            { type: "paragraph" },
+          ],
+        }),
+      ]
+    );
+
+    // Post with codeBlock
+    await client.query(
+      `INSERT INTO posts (title, content, tags, published, content_json) VALUES ($1, $2, $3, $4, $5)`,
+      [
+        "Tiptap Editor JSON Content Example 3",
+        "code block example",
+        ["Tiptap", "Editor", "JSON", "Example"],
+        true,
+        JSON.stringify({
+          type: "doc",
+          content: [
+            {
+              type: "codeBlock",
+              attrs: { language: null },
+              content: [
+                {
+                  type: "text",
+                  text: 'async function getPost(id: string): Promise<Post> {\n  const res = await fetch(`http://localhost:3000/posts/${id}`);\n\n  if (res.status === 404) notFound();\n\n  if (!res.ok) {\n    throw new Error("Failed to fetch post");\n  }\n\n  return res.json();\n}',
+                },
+              ],
+            },
+          ],
+        }),
+      ]
+    );
+
     // Comments
     await client.query(`
       INSERT INTO comments (content, post_id, user_id) VALUES

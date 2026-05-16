@@ -3,6 +3,7 @@ export type Post = {
   id: number;
   title: string;
   content: string;
+  content_json: unknown;
   tags: string[] | null;
   author: string;
   published: boolean;

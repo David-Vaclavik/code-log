@@ -24,15 +24,16 @@ export const getPosts = async (req: Request, res: Response) => {
 };
 
 // Tags are optional, but if provided, they should be an array of strings.
+//TODO: redo content to description
 export const createPost = async (req: Request, res: Response) => {
-  const { title, content, tags } = req.body;
+  const { title, content, content_json, tags } = req.body;
 
   if (!title?.trim() || !content?.trim()) {
     return res.status(400).json({ error: "Title and content are required" });
   }
 
   try {
-    const post = await insertPost(title, content, tags);
+    const post = await insertPost(title, content, content_json, tags);
 
     res.status(201).json(post);
   } catch (err) {

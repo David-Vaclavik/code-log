@@ -2,21 +2,18 @@
 
 import { useState } from "react";
 import { Content, generateHTML } from "@tiptap/react";
-// import { StarterKit } from "@tiptap/starter-kit";
-import { createExtensions } from "./ui/minimal-tiptap/hooks/use-minimal-tiptap";
-// import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
 import { MinimalTiptapEditor } from "./ui/minimal-tiptap";
 import { Button } from "./ui/button";
-import { usePathname, useRouter } from "next/navigation";
+import { createExtensions } from "./ui/minimal-tiptap/hooks/use-minimal-tiptap";
+// import { usePathname, useRouter } from "next/navigation";
 
 export default function PostEditor() {
-  const router = useRouter();
-  const pathname = usePathname();
+  // const router = useRouter();
+  // const pathname = usePathname();
 
   const [content, setContent] = useState<Content>("");
   const [form, setForm] = useState({
     title: "",
-    // content: "",
     tags: "",
   });
 
@@ -36,7 +33,6 @@ export default function PostEditor() {
         return;
       }
 
-      // const html = generateHTML(content, [StarterKit]);
       const html = generateHTML(content, createExtensions({ placeholder: "", output: "json" }));
       console.log("HTML: ", html);
     } catch (error) {
@@ -65,7 +61,8 @@ export default function PostEditor() {
             .map((tag) => tag.trim())
             .filter(Boolean)
         : null,
-      content: content,
+      content: "This should be description in the future",
+      content_json: content,
     };
 
     console.log("Formatted Form: ", payloadForm);
@@ -114,13 +111,6 @@ export default function PostEditor() {
           className=" bg-zinc-600 py-1.5 px-3"
         />
 
-        {/* <textarea
-          placeholder="Content"
-          name="content"
-          onChange={handleChange}
-          className=" bg-zinc-600 py-1.5 px-3"
-        ></textarea> */}
-
         <button type="submit" className="bg-zinc-800">
           Submit
         </button>
@@ -131,7 +121,7 @@ export default function PostEditor() {
         onChange={setContent}
         className="min-h-120 w-full"
         editorContentClassName="p-5 flex flex-1"
-        output="html"
+        output="json"
         placeholder="Write your post..."
         autofocus={true}
         editable={true}

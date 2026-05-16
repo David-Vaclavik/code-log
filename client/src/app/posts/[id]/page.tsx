@@ -1,4 +1,6 @@
 import Comments from "@/components/comments";
+import { TiptapExtensionsRenderer } from "@/components/tiptap-render";
+// import {  TiptapManualRenderer } from "@/components/tiptap-render";
 import { Post } from "@/lib/types";
 import { notFound } from "next/navigation";
 
@@ -18,31 +20,20 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           {post.updated_at ? new Date(post.updated_at).toLocaleDateString("cs-CZ") : "N/A"}
         </p>
 
-        {/* content */}
-        {/* <p className="text-base text-zinc-350 leading-relaxed">{post.content}</p> */}
-        {/* <article className="prose prose-zinc dark:prose-invert">{post.content}</article> */}
-
-        {/* prose-code:bg-zinc-800 */}
-        <article className="prose prose-zinc dark:prose-invert prose-h1:text-5xl prose-code:rounded prose-code:px-2 prose-code:py-1 ">
+        {/* Below works for html in the content */}
+        {/* <article className="prose prose-zinc dark:prose-invert prose-h1:text-5xl prose-code:rounded prose-code:px-2 prose-code:py-1 ">
           <div
             dangerouslySetInnerHTML={{
               __html: post.content,
             }}
           />
-        </article>
-
-        {/* <article className="prose prose-zinc dark:prose-invert">
-          <h1>Garlic bread with cheese: What the science tells us</h1>
-          <p>
-            For years parents have espoused the health benefits of eating garlic bread with cheese
-            to their children, with the food earning such an iconic status in our culture that kids
-            will often dress up as warm, cheesy loaf for Halloween.
-          </p>
-          <p>
-            But a recent study shows that the celebrated appetizer may be linked to a series of
-            rabies cases springing up around the country.
-          </p>
         </article> */}
+
+        {/* Below is for content_json, using manual mapping only - renderJSONContentToReactElement */}
+        {/* <TiptapManualRenderer content={post.content_json} /> */}
+
+        {/* Below is for content_json, using TiptapRenderer - renderToReactElement  */}
+        <TiptapExtensionsRenderer content={post.content_json} />
       </div>
 
       {/* comments */}

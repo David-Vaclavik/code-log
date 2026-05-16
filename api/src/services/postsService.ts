@@ -5,12 +5,26 @@ export const getAllPosts = async () => {
   return rows;
 };
 
-export const insertPost = async (title: string, content: string, tags?: string[]) => {
+type JSONContent = {
+  type?: string;
+  attrs?: Record<string, any> | undefined;
+  content?: JSONContent[];
+  marks?: { type: string; attrs?: Record<string, any>; [key: string]: any }[];
+  text?: string;
+  [key: string]: any;
+};
+
+export const insertPost = async (
+  title: string,
+  content: string,
+  content_json: JSONContent,
+  tags?: string[]
+) => {
   const { rows } = await pool.query(
-    `INSERT INTO posts (title, content, tags)
-     VALUES ($1, $2, $3)
+    `INSERT INTO posts (title, content, content_json, tags)
+     VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [title, content, tags ?? null]
+    [title, content, content_json, tags ?? null]
   );
 
   return rows[0];
