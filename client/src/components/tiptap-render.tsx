@@ -2,18 +2,18 @@ import { renderJSONContentToReactElement } from "@tiptap/static-renderer/json/re
 import { renderToReactElement } from "@tiptap/static-renderer/pm/react";
 import { JSONContent } from "@tiptap/core";
 import { createExtensions } from "@/lib/tiptap-extensions";
+// import { Content } from "@tiptap/react";
+import { type NodeType } from "@tiptap/core";
 
-// TODO: use better types - Content
 interface TiptapRendererProps {
-  content: JSONContent | undefined | null | unknown;
+  content: JSONContent;
 }
 
 export function TiptapExtensionsRenderer({ content }: TiptapRendererProps) {
   if (!content) return null;
 
   const rendered = renderToReactElement({
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    extensions: createExtensions({ placeholder: "" }) as any, //! to remove any, we need to install @tiptap/core
+    extensions: createExtensions({ placeholder: "" }),
     content,
     options: {
       markMapping: {
@@ -79,8 +79,7 @@ export function TiptapManualRenderer({ content }: TiptapRendererProps) {
 
   return (
     <div className="prose prose-zinc dark:prose-invert">
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      {renderJson({ content: content as any })}
+      {renderJson({ content: content as NodeType })}
     </div>
   );
 }

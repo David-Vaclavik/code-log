@@ -1,7 +1,7 @@
 import Comments from "@/components/comments";
 import { TiptapExtensionsRenderer } from "@/components/tiptap-render";
 // import {  TiptapManualRenderer } from "@/components/tiptap-render";
-import { Post } from "@/lib/types";
+import { Comment, Post } from "@/lib/types";
 import { notFound } from "next/navigation";
 
 export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
@@ -54,7 +54,7 @@ async function getPost(id: string): Promise<Post> {
   return res.json();
 }
 
-async function getComments(postId: string) {
+async function getComments(postId: string): Promise<Comment[]> {
   const res = await fetch(`http://localhost:3000/posts/${postId}/comments`);
 
   if (!res.ok) {

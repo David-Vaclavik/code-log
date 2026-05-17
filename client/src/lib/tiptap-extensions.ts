@@ -98,10 +98,10 @@ export const createExtensions = ({
   TextStyle,
   Selection,
   Typography,
+  Placeholder.configure({ placeholder: () => placeholder }),
+  // Color, //TODO: additional dependency @tiptap/extension-color
   // HorizontalRule, //* now we use default horizontal rule from StarterKit
   // CodeBlockLowlight, //* now we use default code block from StarterKit
-  // Color, //TODO: additional dependency @tiptap/extension-color
-  Placeholder.configure({ placeholder: () => placeholder }),
   // unsetAllMarks, //? Extensions.create doesn't have to be in the list
   // ResetMarksOnEnter, //? Extensions.create doesn't have to be in the list
 
