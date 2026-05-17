@@ -62,3 +62,31 @@ html {
   background-color: transparent;
   padding: 0;
 }
+
+/* shiki code blocks */
+.prose .shiki {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.prose .shiki code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875em;
+  color: inherit;
+}
+
+/* remove backticks from prose on shiki code */
+.prose .shiki code::before,
+.prose .shiki code::after {
+  content: none;
+}
+
+/* disable ligatures, "===" merge into a single glyph that looks like ≡ */
+.prose code,
+.prose pre,
+.prose .shiki code {
+  font-variant-ligatures: none;
+}

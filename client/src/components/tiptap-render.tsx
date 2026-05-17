@@ -4,18 +4,45 @@ import { JSONContent } from "@tiptap/core";
 import { createExtensions } from "@/lib/tiptap-extensions";
 // import { Content } from "@tiptap/react";
 import { type NodeType } from "@tiptap/core";
+import { extractHighlightedCodeBlocks } from "@/lib/extractCodeBlocks";
+import { highlightCode } from "@/lib/highlight";
 
 interface TiptapRendererProps {
   content: JSONContent;
 }
 
-export function TiptapExtensionsRenderer({ content }: TiptapRendererProps) {
+export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps) {
   if (!content) return null;
+
+  const highlightedBlocks = await extractHighlightedCodeBlocks(content, highlightCode);
 
   const rendered = renderToReactElement({
     extensions: createExtensions({ placeholder: "" }),
     content,
     options: {
+      nodeMapping: {
+        codeBlock: ({ node }) => {
+          // const code = node.textContent;
+          // const highlighted = highlightedBlocks.get(code);
+
+          // renderer
+          const code = node.textContent;
+          const lang = node.attrs?.language || "ts";
+          const key = `${lang}:${code}`;
+          const highlighted = highlightedBlocks.get(key);
+
+          if (!highlighted)
+            return (
+              <pre>
+                <code>Failed to highlight</code>
+              </pre>
+            );
+
+          return (
+            <div className="not-prose my-6" dangerouslySetInnerHTML={{ __html: highlighted }} />
+          );
+        },
+      },
       markMapping: {
         code: ({ children }) => <code spellCheck={false}>{children}</code>,
       },
