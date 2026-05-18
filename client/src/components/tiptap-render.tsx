@@ -49,7 +49,7 @@ export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps)
     },
   });
 
-  return <article className="prose prose-zinc dark:prose-invert">{rendered}</article>;
+  return <article className="flex flex-col prose prose-zinc dark:prose-invert">{rendered}</article>;
 }
 
 export function TiptapManualRenderer({ content }: TiptapRendererProps) {
