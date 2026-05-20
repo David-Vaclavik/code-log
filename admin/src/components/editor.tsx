@@ -15,6 +15,7 @@ export default function PostEditor() {
   const [form, setForm] = useState({
     title: "",
     tags: "",
+    description: "",
   });
 
   const handleConsoleLog = () => {
@@ -61,8 +62,8 @@ export default function PostEditor() {
             .map((tag) => tag.trim())
             .filter(Boolean)
         : null,
-      content: "This should be description in the future",
-      content_json: content,
+      // description: "This should be description in the future",
+      content: content,
     };
 
     console.log("Formatted Form: ", payloadForm);
@@ -107,6 +108,12 @@ export default function PostEditor() {
         <input
           placeholder="Tags"
           name="tags"
+          onChange={handleChange}
+          className=" bg-zinc-600 py-1.5 px-3"
+        />
+        <input
+          placeholder="Description"
+          name="description"
           onChange={handleChange}
           className=" bg-zinc-600 py-1.5 px-3"
         />

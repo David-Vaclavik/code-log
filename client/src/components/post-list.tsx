@@ -15,7 +15,7 @@ export default async function PostList() {
           <h2 className="text-2xl font-semibold">{post.title}</h2>
           {post.tags && <p className="text-sm text-zinc-500">Tags: {post.tags.join(", ")}</p>}
 
-          <p className="text-base text-zinc-350 mt-2 line-clamp-3">{post.content}</p>
+          <p className="text-base text-zinc-350 mt-2 line-clamp-3">{post.description}</p>
           <p className="text-sm text-zinc-500">{new Date(post.created_at).toLocaleDateString()}</p>
         </Link>
       ))}

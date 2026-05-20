@@ -1,13 +1,16 @@
+import { JSONContent } from "@tiptap/core";
+
 // Used in: components/post-list.tsx, app/posts/[id]/page.tsx
 export type Post = {
   id: number;
   title: string;
-  content: string;
+  description: string;
+  content: JSONContent;
   tags: string[] | null;
   author: string;
   published: boolean;
-  created_at: string;
-  updated_at: string | null;
+  created_at: Date;
+  updated_at: Date | null;
 };
 
 // Used in: components/comments.tsx
@@ -17,8 +20,8 @@ export type Comment = {
   user_name: string;
   user_id: number;
   post_id: number;
-  created_at: string;
-  updated_at: string | null;
+  created_at: Date;
+  updated_at: Date | null;
 };
 
 // Used in header.tsx, setup in auth/me endpoint

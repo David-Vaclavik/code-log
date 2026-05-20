@@ -1,52 +1,51 @@
 import pool from "../db/pool.js";
+import { JSONContent, Post } from "../types/types.js";
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (): Promise<Post[]> => {
   const { rows } = await pool.query("SELECT * FROM posts ORDER BY created_at DESC");
   return rows;
 };
 
-type JSONContent = {
-  type?: string;
-  attrs?: Record<string, any> | undefined;
-  content?: JSONContent[];
-  marks?: { type: string; attrs?: Record<string, any>; [key: string]: any }[];
-  text?: string;
-  [key: string]: any;
-};
-
 export const insertPost = async (
   title: string,
-  content: string,
-  content_json: JSONContent,
+  description: string,
+  content: JSONContent,
   tags?: string[]
-) => {
+): Promise<Post> => {
   const { rows } = await pool.query(
-    `INSERT INTO posts (title, content, content_json, tags)
+    `INSERT INTO posts (title, description, content, tags)
      VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [title, content, content_json, tags ?? null]
+    [title, description, content, tags ?? null]
   );
 
   return rows[0];
 };
 
-export const getPostById = async (id: number) => {
+export const getPostById = async (id: number): Promise<Post | null> => {
   const { rows } = await pool.query("SELECT * FROM posts WHERE id = $1", [id]);
-  return rows[0];
+  return rows[0] || null;
 };
 
-export const updatePost = async (id: number, title: string, content: string, tags?: string[]) => {
+export const updatePost = async (
+  id: number,
+  title: string,
+  description: string,
+  content: JSONContent,
+  tags?: string[]
+): Promise<Post | null> => {
   const { rows } = await pool.query(
     `UPDATE posts
      SET 
       title = $1,
-      content = $2,
-      tags = $3,
+      description = $2,
+      content = $3,
+      tags = $4,
       updated_at = NOW()
-     WHERE id = $4
+     WHERE id = $5
      RETURNING *`,
-    [title, content, tags ?? null, id]
+    [title, description, content, tags ?? null, id]
   );
 
-  return rows[0];
+  return rows[0] || null;
 };

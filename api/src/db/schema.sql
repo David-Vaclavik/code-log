@@ -13,7 +13,11 @@ CREATE TABLE IF NOT EXISTS "posts" (
 -- Added content_json column to store structured content for future use with rich text editor, later we will remove the content column and use content_json exclusively
 ALTER TABLE "posts"
 ADD COLUMN IF NOT EXISTS "content_json" JSONB;
--- TODO: change content to description and content_json to content
+-- changed content to description and content_json to content
+ALTER TABLE "posts"
+RENAME COLUMN "content" TO "description";
+ALTER TABLE "posts"
+RENAME COLUMN "content_json" TO "content";
 
 
 CREATE TABLE IF NOT EXISTS "comments" (

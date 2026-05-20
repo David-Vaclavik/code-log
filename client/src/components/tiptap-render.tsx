@@ -49,7 +49,12 @@ export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps)
     },
   });
 
-  return <article className="flex flex-col prose prose-zinc dark:prose-invert">{rendered}</article>;
+  return (
+    // prose sets max-width: 65ch by default. Add max-w-none to override it:
+    <article className="flex flex-col w-full prose prose-zinc dark:prose-invert max-w-none">
+      {rendered}
+    </article>
+  );
 }
 
 export function TiptapManualRenderer({ content }: TiptapRendererProps) {

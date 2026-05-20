@@ -10,7 +10,7 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
   const comments = await getComments(id);
 
   return (
-    <main className="flex flex-1 w-full max-w-3xl flex-col items-center gap-16 sm:items-start">
+    <main className="flex flex-1 w-full max-w-3xl flex-col items-center gap-16">
       <div className="w-full flex flex-col gap-4">
         {post.tags && <p className="text-sm text-zinc-500">Tags: {post.tags.join(", ")}</p>}
         <h1 className="text-5xl text-zinc-200">{post.title}</h1>
@@ -33,7 +33,7 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
         {/* <TiptapManualRenderer content={post.content_json} /> */}
 
         {/* Below is for content_json, using TiptapRenderer - renderToReactElement  */}
-        <TiptapExtensionsRenderer content={post.content_json} />
+        <TiptapExtensionsRenderer content={post.content} />
       </div>
 
       {/* comments */}

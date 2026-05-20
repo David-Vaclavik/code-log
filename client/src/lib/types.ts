@@ -4,8 +4,8 @@ import { JSONContent } from "@tiptap/core";
 export type Post = {
   id: number;
   title: string;
-  content: string;
-  content_json: JSONContent;
+  description: string;
+  content: JSONContent;
   tags: string[] | null;
   author: string;
   published: boolean;

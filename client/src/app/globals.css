@@ -49,6 +49,11 @@ html {
   width: 720px;
 } */
 
+.prose {
+  /* width: 100%; */
+  /* min-width: 720px; */
+}
+
 .prose code::before,
 .prose code::after {
   content: none;

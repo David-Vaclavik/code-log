@@ -1,16 +1,6 @@
 import { Request, Response } from "express";
 import { getAllPosts, getPostById, insertPost, updatePost } from "../services/postsService.js";
-
-type Post = {
-  id: number;
-  title: string;
-  content: string;
-  tags: string[] | null;
-  author: string;
-  published: boolean;
-  created_at: Date;
-  updated_at: Date | null;
-};
+import { Post } from "../types/types.js";
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
@@ -24,16 +14,15 @@ export const getPosts = async (req: Request, res: Response) => {
 };
 
 // Tags are optional, but if provided, they should be an array of strings.
-//TODO: redo content to description
 export const createPost = async (req: Request, res: Response) => {
-  const { title, content, content_json, tags } = req.body;
+  const { title, description, content, tags } = req.body;
 
-  if (!title?.trim() || !content?.trim()) {
-    return res.status(400).json({ error: "Title and content are required" });
+  if (!title?.trim() || !description?.trim() || !content) {
+    return res.status(400).json({ error: "Title, description, and content are required" });
   }
 
   try {
-    const post = await insertPost(title, content, content_json, tags);
+    const post: Post = await insertPost(title, description, content, tags);
 
     res.status(201).json(post);
   } catch (err) {
@@ -52,7 +41,7 @@ export const getPost = async (req: Request, res: Response) => {
   try {
     // also pg doesn't care if we pass a string or number as id, it will work either way,
     // but we want to validate that it's a number before querying the database
-    const post = await getPostById(postId);
+    const post: Post | null = await getPostById(postId);
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
@@ -72,13 +61,13 @@ export const editPost = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Invalid post ID" });
   }
 
-  const { title, content, tags } = req.body;
-  if (!title?.trim() || !content?.trim()) {
-    return res.status(400).json({ error: "Title and content are required" });
+  const { title, description, content, tags } = req.body;
+  if (!title?.trim() || !description?.trim() || !content) {
+    return res.status(400).json({ error: "Title, description, and content are required" });
   }
 
   try {
-    const post = await updatePost(postId, title, content, tags);
+    const post: Post | null = await updatePost(postId, title, description, content, tags);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
