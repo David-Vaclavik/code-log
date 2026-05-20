@@ -47,46 +47,123 @@ export const seedDatabase = async () => {
     );
 
     // Posts
-    await client.query(`
-      INSERT INTO posts (title, content, tags, author, published) VALUES
-        (
-          'Getting Started with TypeScript',
-          'TypeScript is a strongly typed superset of JavaScript that compiles to plain JavaScript. In this post we explore the basics of TypeScript and why you should consider using it in your next project.',
-          ARRAY['TypeScript', 'JavaScript'],
-          'David Václavík',
-          TRUE
-        ),
-        (
-          'Building a REST API with Express',
-          'Express is a minimal and flexible Node.js web application framework. This post walks through building a REST API with Express, PostgreSQL, and proper error handling.',
-          ARRAY['Node.js', 'Express', 'PostgreSQL'],
-          'David Václavík',
-          TRUE
-        ),
-        (
-          'Draft Post - Work in Progress',
-          'This post is not yet published and is still being written.',
-          ARRAY['Draft'],
-          'David Václavík',
-          FALSE
-        )
-    `);
+    await client.query(
+      `INSERT INTO posts (title, description, tags, author, published, content) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [
+        "Getting Started with TypeScript",
+        "TypeScript is a strongly typed superset of JavaScript that compiles to plain JavaScript. In this post we explore the basics of TypeScript and why you should consider using it in your next project.",
+        ["TypeScript", "JavaScript"],
+        "David Václavík",
+        true,
+        JSON.stringify({
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "TypeScript is a strongly typed superset of JavaScript that compiles to plain JavaScript. In this post we explore the basics of TypeScript and why you should consider using it in your next project.",
+                },
+              ],
+            },
+          ],
+        }),
+      ]
+    );
 
-    // Posts using default values for optional fields
-    await client.query(`
-      INSERT INTO posts (title, content) VALUES
-        ('Post without tags', 'This post does not have any tags.')
-    `);
+    await client.query(
+      `INSERT INTO posts (title, description, tags, author, published, content) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [
+        "Building a REST API with Express",
+        "Express is a minimal and flexible Node.js web application framework. This post walks through building a REST API with Express, PostgreSQL, and proper error handling.",
+        ["Node.js", "Express", "PostgreSQL"],
+        "David Václavík",
+        true,
+        JSON.stringify({
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Express is a minimal and flexible Node.js web application framework. This post walks through building a REST API with Express, PostgreSQL, and proper error handling.",
+                },
+              ],
+            },
+          ],
+        }),
+      ]
+    );
+
+    await client.query(
+      `INSERT INTO posts (title, description, tags, author, published, content) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [
+        "Draft Post - Work in Progress",
+        "This post is not yet published and is still being written.",
+        ["Draft"],
+        "David Václavík",
+        false,
+        JSON.stringify({
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "This post is not yet published and is still being written.",
+                },
+              ],
+            },
+          ],
+        }),
+      ]
+    );
+
+    // Post without tags
+    await client.query(`INSERT INTO posts (title, description, content) VALUES ($1, $2, $3)`, [
+      "Post without tags",
+      "This post does not have any tags.",
+      JSON.stringify({
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [{ type: "text", text: "This post does not have any tags." }],
+          },
+        ],
+      }),
+    ]);
 
     // Posts with tags array
-    await client.query(`
-      INSERT INTO posts (title, content, tags) VALUES
-        ('Resource Names for Enterprise TypeScript Monorepos', 'Multi-service TypeScript applications have a naming problem. Every service invents its own way to reference resources. One team builds paths with template literals, another passes loose IDs through function arguments, a third hardcodes service prefixes as magic strings. It works until someone joins the team and asks “how do I construct a resource path here?” and gets a different answer depending on which file they are looking at.', ARRAY['TypeScript', 'React'])
-    `);
-
-    // Post with content_json (Tiptap JSON)
     await client.query(
-      `INSERT INTO posts (title, content, tags, published, content_json) VALUES ($1, $2, $3, $4, $5)`,
+      `INSERT INTO posts (title, description, tags, content) VALUES ($1, $2, $3, $4)`,
+      [
+        "Resource Names for Enterprise TypeScript Monorepos",
+        "Multi-service TypeScript applications have a naming problem.",
+        ["TypeScript", "React"],
+        JSON.stringify({
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: 'Multi-service TypeScript applications have a naming problem. Every service invents its own way to reference resources. One team builds paths with template literals, another passes loose IDs through function arguments, a third hardcodes service prefixes as magic strings. It works until someone joins the team and asks "how do I construct a resource path here?" and gets a different answer depending on which file they are looking at.',
+                },
+              ],
+            },
+          ],
+        }),
+      ]
+    );
+
+    // Post with Most of Tiptap features, for testing purposes
+    await client.query(
+      `INSERT INTO posts (title, description, tags, published, content) VALUES ($1, $2, $3, $4, $5)`,
       [
         "Tiptap Editor JSON Content Example",
         "Section 1: Headings Section 2: Bold, Italic, Underline, Strikethrough, Code Section 3: Colors Section 4: Lists Section 5: Links",
@@ -434,7 +511,7 @@ export const seedDatabase = async () => {
 
     // Post with horizontalRule and blockquote
     await client.query(
-      `INSERT INTO posts (title, content, tags, published, content_json) VALUES ($1, $2, $3, $4, $5)`,
+      `INSERT INTO posts (title, description, tags, published, content) VALUES ($1, $2, $3, $4, $5)`,
       [
         "Tiptap Editor JSON Content Example 2",
         "normal text, horizontal rule, blockquote",
@@ -463,7 +540,7 @@ export const seedDatabase = async () => {
 
     // Post with codeBlock
     await client.query(
-      `INSERT INTO posts (title, content, tags, published, content_json) VALUES ($1, $2, $3, $4, $5)`,
+      `INSERT INTO posts (title, description, tags, published, content) VALUES ($1, $2, $3, $4, $5)`,
       [
         "Tiptap Editor JSON Content Example 3",
         "code block example",
