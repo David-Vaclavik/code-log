@@ -37,7 +37,7 @@ export default function Sidebar() {
           <Link href="/draft">Drafts List</Link>
         </Button>
         <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/draft/1">Draft 1</Link>
+          <Link href="/draft/37">Draft 37 Edit</Link>
         </Button>
         <Button className="text-xl justify-start" variant={"link"} asChild>
           <Link href="/draft/new">Draft New Post</Link>

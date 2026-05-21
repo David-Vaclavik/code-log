@@ -46,6 +46,13 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* that creates: max-w-3xl-editor - which is used for editor and 
+   * adds padding and border so content is the same width as in client */
+  --container-3xl-editor: calc(var(--container-3xl) + 42px);
+  /*  This is same as --color-zinc-350 in client, but here it's a conflict with shadcn, 
+      so we have to change the name */
+  --color-zinc-mid: oklch(78.5% 0.015 286.067);
 }
 
 :root {

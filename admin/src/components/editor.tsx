@@ -7,11 +7,27 @@ import { Button } from "./ui/button";
 import { createExtensions } from "./ui/minimal-tiptap/hooks/use-minimal-tiptap";
 // import { usePathname, useRouter } from "next/navigation";
 
+const jsonExample = {
+  type: "doc",
+  content: [
+    {
+      type: "paragraph",
+      content: [
+        {
+          text: "Testing setting content with JSON",
+          type: "text",
+        },
+      ],
+    },
+  ],
+};
+
 export default function PostEditor() {
   // const router = useRouter();
   // const pathname = usePathname();
 
   const [content, setContent] = useState<Content>("");
+  const [editorKey, setEditorKey] = useState(0);
   const [form, setForm] = useState({
     title: "",
     tags: "",
@@ -20,6 +36,11 @@ export default function PostEditor() {
 
   const handleConsoleLog = () => {
     console.log(content);
+  };
+
+  const handleSetContent = () => {
+    setContent(jsonExample);
+    setEditorKey((prev) => prev + 1);
   };
 
   const handleGenerate = () => {
@@ -95,7 +116,7 @@ export default function PostEditor() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col max-w-3xl-editor gap-4">
       <h2>Create post form</h2>
 
       <form action="" onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -124,6 +145,7 @@ export default function PostEditor() {
       </form>
 
       <MinimalTiptapEditor
+        key={editorKey}
         value={content}
         onChange={setContent}
         className="min-h-120 w-full"
@@ -137,6 +159,9 @@ export default function PostEditor() {
 
       <Button onClick={handleConsoleLog} variant="outline">
         Console log content
+      </Button>
+      <Button onClick={handleSetContent} variant="outline">
+        Set content
       </Button>
       <Button onClick={handleGenerate} variant="default">
         Generate HTML

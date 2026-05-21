@@ -1,6 +1,6 @@
 import { JSONContent } from "@tiptap/core";
 
-// Used in: components/post-list.tsx, app/posts/[id]/page.tsx
+// Used in: app/posts/[id]/page.tsx, components/draft-list.tsx, components/edit-post.tsx
 export type Post = {
   id: number;
   title: string;

@@ -10,13 +10,11 @@ export default async function DraftList() {
         <Link
           key={post.id}
           href={`/draft/${post.id}`}
-          className="grid grid-cols-[1fr_200px_120px] gap-4 items-center hover:bg-zinc-900 px-8 py-4  rounded-lg transition-colors"
+          className="grid grid-cols-[minmax(200px,1fr)_80px_200px_100px] gap-4 items-center hover:bg-zinc-900 px-8 py-4  rounded-lg transition-colors"
         >
           <h2 className="text-2xl font-semibold truncate">{post.title}</h2>
-          {/* {post.tags && (
-            <p className="text-sm text-zinc-500 truncate">Tags: {post.tags.join(", ")}</p>
-          )} */}
 
+          <p className="text-base text-zinc-mid">{post.published ? "Published" : "Draft"}</p>
           <p className="text-sm text-zinc-500 truncate">Tags: {post.tags?.join(", ")}</p>
           <p className="text-sm text-zinc-500">{new Date(post.created_at).toLocaleDateString()}</p>
         </Link>
