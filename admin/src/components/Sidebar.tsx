@@ -27,6 +27,9 @@ export default function Sidebar() {
         <Button className="text-xl justify-start" variant={"link"} asChild>
           <Link href="/auth/logout">Logout</Link>
         </Button>
+        <Button className="text-xl justify-start" variant={"link"} asChild>
+          <Link href="/auth/test">Testing forms</Link>
+        </Button>
       </div>
 
       {/* Draft Section */}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -46,6 +47,7 @@ export default function RootLayout({
           </nav>
           <main className="p-8 flex-1">{children}</main>
         </TooltipProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -34,10 +34,29 @@ export type Comment = {
   updated_at: Date | null;
 };
 
-// Used in:
+// Reflects the database structure, including password_hash and timestamps
+// Used in: src\services\authService.ts - findUserByEmail
+// Used in: src\controllers\authController.ts - register, login
+export type UserRow = {
+  id: number;
+  name: string;
+  email: string;
+  is_admin: boolean;
+  password_hash: string;
+  created_at: Date;
+  updated_at: Date | null;
+};
+
+// Excludes sensitive fields, safe to pass to client
+// Used in: src\services\authService.ts - createUser, findUserById
+// Used in: src\controllers\authController.ts - register, getUser
+export type User = Omit<UserRow, "password_hash" | "updated_at" | "created_at">;
+
+/* This is what's in the FE, we just changed is_admin to isAdmin in the controller response
 export type User = {
   id: number;
   name: string;
   email: string;
   isAdmin: boolean;
 };
+*/

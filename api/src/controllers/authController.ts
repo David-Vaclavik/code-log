@@ -7,6 +7,8 @@ import {
   hashPassword,
   findUserById,
 } from "../services/authService.js";
+import type { UserRow, User } from "../types/types.js";
+import { RegisterBody } from "../schemas/auth.js";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -16,7 +18,6 @@ const COOKIE_OPTIONS = {
 } as const;
 
 // Defines how to create a token
-//! for now we don't use isAdmin anywhere, prepared for the admin FE
 //    - used in AuthStatus component to display if the user is admin or not
 const signToken = (userId: number, isAdmin = false) =>
   jwt.sign({ userId, isAdmin }, process.env.JWT_SECRET!, {
@@ -24,20 +25,16 @@ const signToken = (userId: number, isAdmin = false) =>
   });
 
 export const register = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-
-  if (!name?.trim() || !email?.trim() || !password?.trim()) {
-    return res.status(400).json({ error: "Name, email and password are required" });
-  }
+  const { name, email, password } = req.body as RegisterBody;
 
   try {
-    const existing = await findUserByEmail(email);
+    const existing: UserRow | undefined = await findUserByEmail(email);
     if (existing) {
       return res.status(409).json({ error: "Email already in use" });
     }
 
     const passwordHash = await hashPassword(password);
-    const user = await createUser(name, email, passwordHash);
+    const user: User = await createUser(name, email, passwordHash);
     const token = signToken(user.id);
 
     res.cookie("token", token, COOKIE_OPTIONS);
@@ -56,7 +53,7 @@ export const login = async (req: Request, res: Response) => {
   }
 
   try {
-    const user = await findUserByEmail(email);
+    const user: UserRow | undefined = await findUserByEmail(email);
     if (!user) {
       return res.status(404).json({ error: "User doesn't exist" });
     }
@@ -83,9 +80,8 @@ export const logout = (_req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
   try {
-    const user = await findUserById(req.userId!);
+    const user: User | undefined = await findUserById(req.userId!);
     if (!user) return res.status(404).json({ error: "User not found" });
-    // console.log(user);
 
     // same response as in login above
     res.json({ user: { id: user.id, name: user.name, email: user.email, isAdmin: user.is_admin } });
