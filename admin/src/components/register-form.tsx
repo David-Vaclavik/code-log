@@ -16,6 +16,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const registerSchema = z
   .object({
@@ -51,10 +52,11 @@ const registerSchema = z
     }
   });
 
-type FormData = z.infer<typeof registerSchema>;
+type FormValues = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
-  const form = useForm<FormData>({
+  const router = useRouter();
+  const form = useForm<FormValues>({
     resolver: zodResolver(registerSchema),
     mode: "onTouched",
     defaultValues: {
@@ -66,7 +68,7 @@ export function RegisterForm() {
   });
 
   // const onSubmit = (data: z.infer<typeof registerSchema>) => {
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     toastPrint(data);
 
     const formData = {
@@ -96,25 +98,8 @@ export function RegisterForm() {
         return;
       }
 
-      form.reset();
-
-      toast("Registration successful! You can now log in.", {
-        description: "Your account has been created successfully.",
-        position: "bottom-right",
-        // duration: Infinity,
-        classNames: {
-          content: "flex flex-col gap-2",
-          description: "text-green-300!",
-        },
-        style: {
-          "--border-radius": "calc(var(--radius)  + 4px)",
-          "--normal-bg": "var(--color-green-900)",
-          "--normal-border": "var(--color-green-700)",
-          "--normal-text": "var(--color-green-100)",
-          width: "fit-content",
-          maxWidth: "90vw",
-        } as React.CSSProperties,
-      });
+      toastPrint(data, "success");
+      router.push("/");
     } catch (error) {
       console.error("Failed to register, catch:", error);
       toast.error("An unexpected error occurred. Please try again.");
@@ -158,10 +143,10 @@ export function RegisterForm() {
                     <Input
                       {...field}
                       id="register-form-email"
-                      // type="email"
+                      type="email"
                       aria-invalid={fieldState.invalid}
                       placeholder="Enter your email"
-                      autoComplete="off" // for testing, in real app it should be autoComplete="email"
+                      autoComplete="email"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
@@ -234,24 +219,53 @@ export function RegisterForm() {
   );
 }
 
-function toastPrint(data: FormData) {
-  toast("You submitted the following values:", {
-    description: (
-      <pre className="mt-2 min-w-80 overflow-x-auto rounded-md p-4 bg-zinc-800 text-zinc-300">
-        <code>{JSON.stringify(data, null, 2)}</code>
-      </pre>
-    ),
-    position: "bottom-right",
-    classNames: {
-      content: "flex flex-col gap-2",
-    },
-    style: {
-      "--border-radius": "calc(var(--radius)  + 4px)",
-      "--normal-bg": "var(--color-zinc-900)",
-      "--normal-border": "var(--color-zinc-700)",
-      "--normal-text": "var(--color-zinc-100)",
-      width: "fit-content",
-      maxWidth: "90vw",
-    } as React.CSSProperties,
-  });
+function toastPrint(data: FormValues, type: string = "default") {
+  switch (type) {
+    case "success":
+      toast("Login successful!", {
+        description: "You have logged in successfully.",
+        position: "bottom-right",
+        // duration: Infinity,
+        classNames: {
+          content: "flex flex-col gap-2",
+          description: "text-green-300!",
+        },
+        style: {
+          "--border-radius": "calc(var(--radius)  + 4px)",
+          "--normal-bg": "var(--color-green-900)",
+          "--normal-border": "var(--color-green-700)",
+          "--normal-text": "var(--color-green-100)",
+          width: "fit-content",
+          maxWidth: "90vw",
+        } as React.CSSProperties,
+      });
+      break;
+    case "error":
+      toast.error("An unexpected error occurred. Please try again.");
+      break;
+    case "payload":
+      toast("You submitted the following values:", {
+        description: (
+          <pre className="mt-2 min-w-80 overflow-x-auto rounded-md p-4 bg-zinc-800 text-zinc-300">
+            <code>{JSON.stringify(data, null, 2)}</code>
+          </pre>
+        ),
+        position: "bottom-right",
+        classNames: {
+          content: "flex flex-col gap-2",
+        },
+        style: {
+          "--border-radius": "calc(var(--radius)  + 4px)",
+          "--normal-bg": "var(--color-zinc-900)",
+          "--normal-border": "var(--color-zinc-700)",
+          "--normal-text": "var(--color-zinc-100)",
+          width: "fit-content",
+          maxWidth: "90vw",
+        } as React.CSSProperties,
+      });
+      break;
+    default:
+      toast("An unexpected error occurred. Please try again.");
+      break;
+  }
 }

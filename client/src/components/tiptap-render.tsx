@@ -2,7 +2,6 @@ import { renderJSONContentToReactElement } from "@tiptap/static-renderer/json/re
 import { renderToReactElement } from "@tiptap/static-renderer/pm/react";
 import { JSONContent } from "@tiptap/core";
 import { createExtensions } from "@/lib/tiptap-extensions";
-// import { Content } from "@tiptap/react";
 import { type NodeType } from "@tiptap/core";
 import { extractHighlightedCodeBlocks } from "@/lib/extractCodeBlocks";
 import { highlightCode } from "@/lib/highlight";
@@ -22,10 +21,6 @@ export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps)
     options: {
       nodeMapping: {
         codeBlock: ({ node }) => {
-          // const code = node.textContent;
-          // const highlighted = highlightedBlocks.get(code);
-
-          // renderer
           const code = node.textContent;
           const lang = node.attrs?.language || "ts";
           const key = `${lang}:${code}`;
@@ -80,7 +75,6 @@ export function TiptapManualRenderer({ content }: TiptapRendererProps) {
       ),
       horizontalRule: () => <hr />,
       hardBreak: () => <br />,
-      // text: ({ node }) => <>{node.text}</>,
       text: ({ node }) => <>{(node as JSONContent).text}</>,
     },
     markMapping: {

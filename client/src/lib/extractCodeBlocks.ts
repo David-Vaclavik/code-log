@@ -12,7 +12,6 @@ export async function extractHighlightedCodeBlocks(
       const lang = n.attrs?.language || "ts";
       const key = `${lang}:${code}`;
       map.set(key, await highlightFn(code, lang));
-      // map.set(code, await highlightFn(code, lang));
     }
     if (n.content) await Promise.all(n.content.map(walk));
   }

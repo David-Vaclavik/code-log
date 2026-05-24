@@ -1,12 +1,14 @@
-import { RegisterForm } from "./register-form";
+import { LoginForm } from "@/components/login-form";
+// import { RegisterForm } from "@/components/register-form";
 
 export default function RegisterPage() {
   return (
     <div className="flex flex-col justify-center items-center w-full h-full">
-      <h1>Register Form</h1>
-      <RegisterForm />
+      {/* <h1>Register Form</h1>
+      <RegisterForm /> */}
 
       <h1>Login Form</h1>
+      <LoginForm />
     </div>
   );
 }

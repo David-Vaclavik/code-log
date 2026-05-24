@@ -1,6 +1,5 @@
 import Comments from "@/components/comments";
 import { TiptapExtensionsRenderer } from "@/components/tiptap-render";
-// import {  TiptapManualRenderer } from "@/components/tiptap-render";
 import { Comment, Post } from "@/lib/types";
 import { notFound } from "next/navigation";
 
@@ -19,18 +18,6 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
           Created: {new Date(post.created_at).toLocaleDateString("cs-CZ")} - Updated:{" "}
           {post.updated_at ? new Date(post.updated_at).toLocaleDateString("cs-CZ") : "N/A"}
         </p>
-
-        {/* Below works for html in the content */}
-        {/* <article className="prose prose-zinc dark:prose-invert prose-h1:text-5xl prose-code:rounded prose-code:px-2 prose-code:py-1 ">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: post.content,
-            }}
-          />
-        </article> */}
-
-        {/* Below is for content_json, using manual mapping only - renderJSONContentToReactElement */}
-        {/* <TiptapManualRenderer content={post.content_json} /> */}
 
         {/* Below is for content_json, using TiptapRenderer - renderToReactElement  */}
         <TiptapExtensionsRenderer content={post.content} />

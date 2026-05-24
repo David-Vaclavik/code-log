@@ -8,7 +8,7 @@ import {
   findUserById,
 } from "../services/authService.js";
 import type { UserRow, User } from "../types/types.js";
-import { RegisterBody } from "../schemas/auth.js";
+import { LoginBody, RegisterBody } from "../schemas/auth.js";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -46,15 +46,18 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body as LoginBody;
 
-  if (!email?.trim() || !password?.trim()) {
-    return res.status(400).json({ error: "Email and password are required" });
-  }
+  //? Generic error message used for both scenarios - solves user enumeration vulnerability
+  const invalidCredentialsResponse = () =>
+    res.status(401).json({ error: "Invalid email or password" });
 
   try {
+    //! user enumeration is a security vulnerability - for now we keep it
     const user: UserRow | undefined = await findUserByEmail(email);
     if (!user) {
+      const dummyHash = "$2b$12$Unf0rtunat3lyDummYHaShF0rS3cur1tyPurp0s3sOn1y";
+      await verifyPassword(password, dummyHash);
       return res.status(404).json({ error: "User doesn't exist" });
     }
 

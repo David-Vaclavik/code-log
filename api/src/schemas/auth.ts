@@ -8,3 +8,10 @@ export const registerSchema = z.object({
 });
 
 export type RegisterBody = z.infer<typeof registerSchema>;
+
+export const loginSchema = registerSchema.pick({
+  email: true,
+  password: true,
+});
+
+export type LoginBody = z.infer<typeof loginSchema>;
