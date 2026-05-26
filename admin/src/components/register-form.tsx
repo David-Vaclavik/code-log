@@ -12,11 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const registerSchema = z
   .object({
@@ -199,7 +200,8 @@ export function RegisterForm() {
         </CardContent>
 
         <CardFooter>
-          <Field orientation="horizontal">
+          <Field>
+            {/* //! Will delete RESET button later */}
             <Button type="button" variant="outline" onClick={() => form.reset()}>
               Reset
             </Button>
@@ -212,6 +214,16 @@ export function RegisterForm() {
               {form.formState.isSubmitting && <Loader2Icon className="animate-spin" />}
               Submit
             </Button>
+
+            <FieldDescription className="mt-8! text-center text-sm font-normal text-muted-foreground">
+              Already have an account?{" "}
+              <Link
+                href="/auth/login"
+                className="font-medium text-card-foreground no-underline! hover:underline!"
+              >
+                Sign in
+              </Link>
+            </FieldDescription>
           </Field>
         </CardFooter>
       </Card>
@@ -222,8 +234,8 @@ export function RegisterForm() {
 function toastPrint(data: FormValues, type: string = "default") {
   switch (type) {
     case "success":
-      toast("Login successful!", {
-        description: "You have logged in successfully.",
+      toast("Registration successful!", {
+        description: "You have registered successfully.",
         position: "bottom-right",
         // duration: Infinity,
         classNames: {

@@ -4,7 +4,7 @@ import AuthStatus from "./auth-status";
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col gap-8 p-8 min-h-full bg-zinc-800">
+    <div className="flex flex-col gap-8 p-8 min-h-full bg-sidebar">
       <h2>Admin Dashboard</h2>
 
       {/* Auth Status - displays the current user and admin status */}
@@ -39,9 +39,9 @@ export default function Sidebar() {
         <Button className="text-xl justify-start" variant={"link"} asChild>
           <Link href="/draft">Drafts List</Link>
         </Button>
-        <Button className="text-xl justify-start" variant={"link"} asChild>
+        {/* <Button className="text-xl justify-start" variant={"link"} asChild>
           <Link href="/draft/37">Draft 37 Edit</Link>
-        </Button>
+        </Button> */}
         <Button className="text-xl justify-start" variant={"link"} asChild>
           <Link href="/draft/new">Draft New Post</Link>
         </Button>

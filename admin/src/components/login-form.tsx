@@ -12,11 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const loginSchema = z.object({
   email: z
@@ -138,7 +139,8 @@ export function LoginForm() {
         </CardContent>
 
         <CardFooter>
-          <Field orientation="horizontal">
+          <Field>
+            {/* //! Will delete RESET button later */}
             <Button type="button" variant="outline" onClick={() => form.reset()}>
               Reset
             </Button>
@@ -149,8 +151,18 @@ export function LoginForm() {
               className="grow"
             >
               {form.formState.isSubmitting && <Loader2Icon className="animate-spin" />}
-              Submit
+              Sign In
             </Button>
+
+            <FieldDescription className="mt-8! text-center text-sm font-normal text-muted-foreground">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/auth/register"
+                className="font-medium text-card-foreground no-underline! hover:underline!"
+              >
+                Create an account
+              </Link>
+            </FieldDescription>
           </Field>
         </CardFooter>
       </Card>

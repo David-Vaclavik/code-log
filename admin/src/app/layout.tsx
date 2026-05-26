@@ -37,8 +37,8 @@ export default function RootLayout({
     >
       <body
         className={cn(
-          "min-h-full flex font-sans",
-          "bg-black text-zinc-100" // This is in client in global.css layer base - py-16 px-8
+          "min-h-full flex font-sans"
+          // "bg-black text-zinc-100" // This is in client in global.css layer base - py-16 px-8 s
         )}
       >
         <TooltipProvider>
