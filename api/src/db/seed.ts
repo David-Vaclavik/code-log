@@ -11,14 +11,6 @@ export const seedDatabase = async () => {
     // Clear existing data (CASCADE handles FK order)
     await client.query("TRUNCATE users, posts, comments RESTART IDENTITY CASCADE");
 
-    // Users
-    // await client.query(`
-    //   INSERT INTO users (name, email, password_hash) VALUES
-    //     ('David Václavík', 'david@example.com', 'password_hash_1'),
-    //     ('Jane Doe', 'jane@example.com', 'password_hash_2'),
-    //     ('John Smith', 'john@example.com', 'password_hash_3')
-    // `);
-
     // Hash passwords before inserting
     const hash = (plain: string) => bcrypt.hash(plain, 12);
 
@@ -26,7 +18,7 @@ export const seedDatabase = async () => {
     await client.query(
       `INSERT INTO users (name, email, password_hash, is_admin) VALUES
         ($1, $2, $3, $4)`,
-      ["David Václavík", "david@example.com", await hash("asd"), true]
+      ["David Václavík", "david@example.com", await hash("asdasdasd"), true]
     );
 
     // Normal users
