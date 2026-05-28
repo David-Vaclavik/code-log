@@ -20,3 +20,6 @@ console.log("Migration complete: renamed content_json to content");
 await pool.end();
 */
 //TODO: later drop tables and create them again with the new schema
+
+// Change admin password
+await pool.query(``);

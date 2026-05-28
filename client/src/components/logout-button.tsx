@@ -2,11 +2,10 @@
 
 import { useRouter } from "next/navigation";
 
-//! Currently not used
-export default function LogoutPage() {
+export function LogoutButton() {
   const router = useRouter();
 
-  const handleSubmit = async () => {
+  const handleLogout = async () => {
     const res = await fetch(`http://localhost:3000/auth/logout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -20,18 +19,15 @@ export default function LogoutPage() {
       return;
     }
 
-    router.push("/");
+    router.refresh();
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <h1>Logout page</h1>
-      <button
-        onClick={handleSubmit}
-        className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md transition-colors"
-      >
-        Logout
-      </button>
-    </div>
+    <button
+      onClick={handleLogout}
+      className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md transition-colors"
+    >
+      Logout
+    </button>
   );
 }
