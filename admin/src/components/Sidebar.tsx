@@ -1,14 +1,32 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "./ui/button";
-import AuthStatus from "./auth-status";
+import { usePathname } from "next/navigation";
 
-export default function Sidebar() {
+const navItems = {
+  Auth: [
+    // { label: "Home", href: "/" },
+    { label: "Login", href: "/auth/login" },
+    { label: "Register", href: "/auth/register" },
+    { label: "Logout", href: "/auth/logout" },
+    { label: "Testing forms", href: "/auth/test" },
+  ],
+  Posts: [
+    { label: "Draft List", href: "/draft" },
+    { label: "Draft New Post", href: "/draft/new" },
+  ],
+};
+
+export default function Sidebar({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
   return (
     <div className="flex flex-col gap-8 p-8 min-h-full bg-sidebar">
       <h2>Admin Dashboard</h2>
 
-      {/* Auth Status - displays the current user and admin status */}
-      <AuthStatus />
+      {/* Auth Status - displays the current user and admin status, needs to be server component */}
+      {children}
 
       <Button className="text-xl justify-start" variant={"link"} asChild>
         <Link href="/">Home</Link>
@@ -18,33 +36,38 @@ export default function Sidebar() {
       <div className="flex flex-col gap-2">
         <h2>Auth</h2>
 
-        <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/auth/login">Login</Link>
-        </Button>
-        <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/auth/register">Register</Link>
-        </Button>
-        <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/auth/logout">Logout</Link>
-        </Button>
-        <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/auth/test">Testing forms</Link>
-        </Button>
+        {navItems.Auth.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Button
+              key={item.href}
+              className={`text-xl justify-start ${isActive ? "bg-sidebar-accent" : ""}`}
+              variant={"link"}
+              asChild
+            >
+              <Link href={item.href}>{item.label}</Link>
+            </Button>
+          );
+        })}
       </div>
 
       {/* Draft Section */}
       <div className="flex flex-col gap-2">
         <h2>Draft</h2>
 
-        <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/draft">Drafts List</Link>
-        </Button>
-        {/* <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/draft/37">Draft 37 Edit</Link>
-        </Button> */}
-        <Button className="text-xl justify-start" variant={"link"} asChild>
-          <Link href="/draft/new">Draft New Post</Link>
-        </Button>
+        {navItems.Posts.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Button
+              key={item.href}
+              className={`text-xl justify-start ${isActive ? "bg-sidebar-accent" : ""}`}
+              variant={"link"}
+              asChild
+            >
+              <Link href={item.href}>{item.label}</Link>
+            </Button>
+          );
+        })}
       </div>
     </div>
   );

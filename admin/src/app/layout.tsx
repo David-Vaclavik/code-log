@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Sidebar from "@/components/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
+import AuthStatus from "@/components/auth-status";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -43,7 +44,9 @@ export default function RootLayout({
       >
         <TooltipProvider>
           <nav>
-            <Sidebar />
+            <Sidebar>
+              <AuthStatus />
+            </Sidebar>
           </nav>
           <main className="p-8 flex-1">{children}</main>
         </TooltipProvider>
