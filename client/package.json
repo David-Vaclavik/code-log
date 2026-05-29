@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
     "@tiptap/core": "3.23.4",
     "@tiptap/extension-text-style": "3.23.4",
     "@tiptap/extension-typography": "3.23.4",
@@ -19,7 +20,9 @@
     "next": "16.2.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "shiki": "^4.0.2"
+    "react-hook-form": "^7.76.1",
+    "shiki": "^4.0.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

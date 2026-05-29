@@ -28,3 +28,7 @@ https://www.saasui.design/pattern/editor/luma
 |         |                                 |
 ------------------------------------------------
 ```
+
+## Form
+
+- `npm install zod react-hook-form @hookform/resolvers` for form handling and validation
