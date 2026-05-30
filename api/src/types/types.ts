@@ -22,7 +22,7 @@ export type Post = {
   updated_at: Date | null;
 };
 
-//TODO: implement types for comments and users as well
+//TODO: implement types for comments
 // Used in:
 export type Comment = {
   id: number;

@@ -1,8 +1,9 @@
 import "dotenv/config";
 import pool from "./pool.js";
+import bcrypt from "bcrypt";
 
 // to run this migration:
-// npx tsx src/db/migrate.ts
+//* npx tsx src/db/migrate.ts
 
 /*
 await pool.query(`ALTER TABLE "posts" ADD COLUMN IF NOT EXISTS "content_json" JSONB`);
@@ -21,5 +22,11 @@ await pool.end();
 */
 //TODO: later drop tables and create them again with the new schema
 
+/*
+// Hash passwords before inserting
+const hash = (plain: string) => bcrypt.hash(plain, 12);
+
 // Change admin password
-await pool.query(``);
+await pool.query(`UPDATE users SET password_hash = $1 WHERE id = 1`, [await hash("asdasdasd")]);
+await pool.end();
+*/

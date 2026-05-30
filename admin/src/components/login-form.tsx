@@ -80,6 +80,7 @@ export function LoginForm() {
       }
 
       toastPrint(data, "success");
+      router.refresh();
       router.push("/");
     } catch (error) {
       console.error("Failed to log in, catch:", error);
