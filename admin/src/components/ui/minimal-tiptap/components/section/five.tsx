@@ -25,7 +25,7 @@ const formatActions: InsertElement[] = [
     value: "codeBlock",
     label: "Code block",
     // icon: <CodeIcon className="size-5" />,
-    icon: <FileCode className="size-[20px]" strokeWidth={1.6} />, // replaced radix icon above with a lucide
+    icon: <FileCode className="size-5" strokeWidth={1.6} />, // replaced radix icon above with a lucide
     action: (editor) => editor.chain().focus().toggleCodeBlock().run(),
     isActive: (editor) => editor.isActive("codeBlock"),
     canExecute: (editor) => editor.can().chain().focus().toggleCodeBlock().run(),

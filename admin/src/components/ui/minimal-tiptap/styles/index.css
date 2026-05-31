@@ -132,7 +132,8 @@
 }
 
 .minimal-tiptap-editor .ProseMirror p {
-  @apply break-words;
+  /* @apply break-words; */
+  @apply wrap-break-word;
 }
 
 .minimal-tiptap-editor .ProseMirror li .text-node:has(+ .list-node),
@@ -152,7 +153,7 @@
 }
 
 .minimal-tiptap-editor .ProseMirror hr {
-  @apply my-3 h-0.5 w-full border-none bg-[var(--mt-hr)];
+  @apply my-3 h-0.5 w-full border-none /*bg-[var(--mt-hr)]*/ bg-(--mt-hr);
 }
 
 .minimal-tiptap-editor .ProseMirror-focused hr.ProseMirror-selectednode {
@@ -271,5 +272,5 @@
 }
 
 .minimal-tiptap-editor .ProseMirror .ProseMirror-selectednode iframe {
-  @apply outline outline-2 outline-offset-2 outline-primary;
+  @apply /*outline*/ outline-2 outline-offset-2 outline-primary;
 }

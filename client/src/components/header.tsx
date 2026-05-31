@@ -1,15 +1,18 @@
 import { User } from "@/lib/types";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { LogoutButton } from "./logout-button";
+// import { LogoutButton } from "./logout-button";
+import Image from "next/image";
 
 export default async function Header() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   const user: User | null = await getUser(token);
+  //? Dicebear is more complex option, maybe later
+  const imageSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "User")}`;
 
   return (
-    <header className="w-full max-w-5xl flex items-center justify-between border-b border-gray-300 pb-4">
+    <header className="w-full max-w-5xl flex items-center justify-between py-4">
       <Link href="/">
         <h1>Code.Log</h1>
       </Link>
@@ -27,38 +30,29 @@ export default async function Header() {
       <div className="flex items-center gap-2">
         {user ? (
           <div className="flex items-center gap-2">
-            {/* The Link should be a profile picture */}
-            <Link
-              href="/me"
-              className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md transition-colors"
-            >
-              Profile
+            <Link href="/me" className="flex items-center">
+              <Image
+                src={imageSrc}
+                alt={user.name || "User"}
+                width={36}
+                height={36}
+                className="rounded-full"
+              />
             </Link>
 
-            <h3 className="text-zinc-300">{user.name}</h3>
+            {/* {user?.isAdmin && <h3>ADMIN</h3>} */}
 
-            {user?.isAdmin && <h3>ADMIN</h3>}
-
-            <LogoutButton />
+            {/* <h3 className="text-zinc-300">{user.name}</h3> */}
+            {/* <LogoutButton /> */}
           </div>
         ) : (
-          <h3 className="text-zinc-300">No user logged</h3>
+          <Link
+            href="/auth/login"
+            className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md transition-colors"
+          >
+            Login
+          </Link>
         )}
-
-        {/* Later we will remove below buttons and will only show login when no user logged */}
-        <Link
-          href="/auth/login"
-          className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md transition-colors"
-        >
-          Login
-        </Link>
-
-        <Link
-          href="/auth/register"
-          className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md transition-colors"
-        >
-          Register
-        </Link>
       </div>
     </header>
   );

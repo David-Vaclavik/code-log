@@ -41,7 +41,7 @@ export function LoginForm() {
       password: data.password,
     };
 
-    await new Promise((resolve) => setTimeout(resolve, 100000));
+    // await new Promise((resolve) => setTimeout(resolve, 100000));
 
     try {
       const res = await fetch(`http://localhost:3000/auth/login`, {

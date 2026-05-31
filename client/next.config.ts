@@ -6,6 +6,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: "T:/VS-Code/React/Code-log",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

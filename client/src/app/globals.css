@@ -169,7 +169,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground py-4 px-8;
+    @apply bg-background text-foreground px-8;
   }
   html {
     @apply font-sans;
