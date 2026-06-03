@@ -11,12 +11,14 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
   return (
     <main className="flex flex-1 w-full max-w-3xl flex-col items-center gap-16">
       <div className="w-full flex flex-col gap-4">
-        {post.tags && <p className="text-sm text-zinc-500">Tags: {post.tags.join(", ")}</p>}
-        <h1 className="text-5xl text-zinc-200">{post.title}</h1>
-        <p className="text-base text-zinc-500">By {post.author}</p>
-        <p className="text-sm text-zinc-500 mb-8">
-          Created: {new Date(post.created_at).toLocaleDateString("cs-CZ")} - Updated:{" "}
-          {post.updated_at ? new Date(post.updated_at).toLocaleDateString("cs-CZ") : "N/A"}
+        {post.tags && <p className="text-sm text-neutral-500">Tags: {post.tags.join(", ")}</p>}
+        <h1 className="text-5xl text-neutral-100">{post.title}</h1>
+        {/* <p className="text-base text-neutral-500">By {post.author}</p> */}
+        <p className="text-sm text-neutral-500 mb-8">
+          Created: {new Date(post.created_at).toLocaleDateString("cs-CZ")}
+          {post.updated_at
+            ? ` - Updated: ${new Date(post.updated_at).toLocaleDateString("cs-CZ")}`
+            : ""}
         </p>
 
         {/* Below is for content_json, using TiptapRenderer - renderToReactElement  */}

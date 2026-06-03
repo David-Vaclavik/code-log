@@ -17,16 +17,20 @@ export default async function Header() {
         <h1>Code.Log</h1>
       </Link>
 
+      {/* Main Nav */}
       <nav className="flex gap-2">
-        <Link
-          href="/posts"
-          className="bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2 rounded-md transition-colors"
-        >
-          Posts
-        </Link>
+        {/* if we have more links let's make it a map ul-li tags */}
+        <div className="flex px-4 py-2">
+          <Link
+            href="/posts"
+            className="underline-slide-x text-xl font-medium hover:text-yellow-500 transition-colors"
+          >
+            Posts
+          </Link>
+        </div>
       </nav>
 
-      {/* User Nav */}
+      {/* User login/profile Nav */}
       <div className="flex items-center gap-2">
         {user ? (
           <div className="flex items-center gap-2">
@@ -40,9 +44,6 @@ export default async function Header() {
               />
             </Link>
 
-            {/* {user?.isAdmin && <h3>ADMIN</h3>} */}
-
-            {/* <h3 className="text-zinc-300">{user.name}</h3> */}
             {/* <LogoutButton /> */}
           </div>
         ) : (
@@ -59,17 +60,27 @@ export default async function Header() {
 }
 
 async function getUser(token: string | undefined): Promise<User | null> {
-  if (token) {
+  if (!token) return null;
+
+  try {
     const res = await fetch("http://localhost:3000/auth/me", {
       headers: { Cookie: `token=${token}` },
       cache: "no-store",
     });
 
-    if (res.ok) {
-      const data = await res.json();
-      return data.user;
-    }
-  }
+    //TODO: handle 401/403 in a better way, maybe add toaster notification
+    // if (res.status === 401 || res.status === 403) return null;
 
-  return null;
+    if (!res.ok) {
+      console.error(`[Header] Auth service error: ${res.status}`);
+      return null;
+    }
+
+    const data: { user: User } = await res.json();
+    return data.user ?? null;
+  } catch (error) {
+    // console.error("Error fetching user:", error);
+    console.error("[Header] Failed to fetch user:", error instanceof Error ? error.message : error);
+    return null;
+  }
 }

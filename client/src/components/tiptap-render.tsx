@@ -34,7 +34,7 @@ export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps)
             );
 
           return (
-            <div className="not-prose my-6" dangerouslySetInnerHTML={{ __html: highlighted }} />
+            <div className="not-prose my-2" dangerouslySetInnerHTML={{ __html: highlighted }} />
           );
         },
       },
@@ -46,7 +46,7 @@ export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps)
 
   return (
     // prose sets max-width: 65ch by default. Add max-w-none to override it:
-    <article className="flex flex-col w-full prose prose-zinc dark:prose-invert max-w-none">
+    <article className="flex flex-col w-full prose prose-neutral dark:prose-invert max-w-none">
       {rendered}
     </article>
   );
@@ -104,7 +104,7 @@ export function TiptapManualRenderer({ content }: TiptapRendererProps) {
   });
 
   return (
-    <div className="prose prose-zinc dark:prose-invert">
+    <div className="prose prose-neutral dark:prose-invert">
       {renderJson({ content: content as NodeType })}
     </div>
   );

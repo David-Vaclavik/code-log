@@ -61,7 +61,7 @@
   --container-3xl-editor: calc(var(--container-3xl) + 42px);
   /*  This is same as --color-zinc-350 in client, but here it's a conflict with shadcn, 
       so we have to change the name */
-  --color-zinc-mid: oklch(78.5% 0.015 286.067);
+  --color-zinc-mid: oklch(78.5% 0 0);
 }
 
 :root {
