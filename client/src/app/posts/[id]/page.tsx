@@ -2,8 +2,18 @@ import Comments from "@/components/comments";
 import { TiptapExtensionsRenderer } from "@/components/tiptap-render";
 import { Comment, Post } from "@/lib/types";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
+type Params = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { id } = await params;
+  return {
+    title: `Post ${id}`,
+  };
+}
+
+export default async function PostPage({ params }: Params) {
   const { id } = await params;
   const post = await getPost(id);
   const comments = await getComments(id);
@@ -32,22 +42,26 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
 }
 
 async function getPost(id: string): Promise<Post> {
-  const res = await fetch(`http://localhost:3000/posts/${id}`);
+  const res = await fetch(`http://localhost:3000/posts/${id}`, {
+    next: { revalidate: 60 },
+  });
 
   if (res.status === 404) notFound();
 
   if (!res.ok) {
-    throw new Error("Failed to fetch post");
+    throw new Error(`Failed to fetch posts (${res.status})`);
   }
 
   return res.json();
 }
 
 async function getComments(postId: string): Promise<Comment[]> {
-  const res = await fetch(`http://localhost:3000/posts/${postId}/comments`);
+  const res = await fetch(`http://localhost:3000/posts/${postId}/comments`, {
+    next: { revalidate: 60 },
+  });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch comments");
+    throw new Error(`Failed to fetch comments (${res.status})`);
   }
 
   return res.json();

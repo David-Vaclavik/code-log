@@ -1,0 +1,17 @@
+import Link from "next/link";
+
+export default function NotFound() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen-without-header">
+      <h2 className="text-3xl text-center mb-4">Post not found</h2>
+      {/* eslint-disable-next-line */}
+      <p className="text-xl mb-10">The post you're looking for doesn't exist.</p>
+      <Link
+        href="/"
+        className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-[550] py-3 px-6 rounded-md hover:bg-primary/80 transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/70 disabled:cursor-not-allowed disabled:bg-primary/50"
+      >
+        Return Home
+      </Link>
+    </div>
+  );
+}

@@ -27,7 +27,15 @@ export default async function PostList() {
   );
 }
 
+// TODO: move to lib/api.ts and add zod validation
 async function getPosts(): Promise<Post[]> {
-  const res = await fetch("http://localhost:3000/posts");
+  const res = await fetch(`${process.env.API_URL}/posts`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch posts (${res.status})`);
+  }
+
   return res.json();
 }
