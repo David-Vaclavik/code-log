@@ -17,19 +17,18 @@ export default function Comments({
   const handleSubmit = async () => {
     if (!content.trim()) return;
 
-    //! For testing purposes we will use a hardcoded user ID,
-    // const fakeUserId = 1;
-
     try {
       const res = await fetch(`http://localhost:3000/posts/${postId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // once login is implemented, we will need to include credentials to send cookies
-        // body: JSON.stringify({ content, user_id: fakeUserId }),
+        credentials: "include",
         body: JSON.stringify({ content }),
       });
 
-      if (!res.ok) throw new Error("Failed to post comment");
+      if (!res.ok) {
+        setError("Failed to post comment. Please try again.");
+        // throw new Error("Failed to post comment");
+      }
 
       setContent("");
       setError(null);
@@ -43,7 +42,7 @@ export default function Comments({
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <h2 className="text-2xl font-medium text-zinc-200">Comments</h2>
+      <h2 className="text-2xl font-medium text-neutral-200">Comments</h2>
 
       {/* comment input */}
       {/* TODO: for testing there is no need to be logged in, will change later */}
@@ -52,7 +51,7 @@ export default function Comments({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Write a comment..."
-          className="w-full bg-zinc-950 text-zinc-300 placeholder-zinc-500 border border-zinc-800 rounded-lg p-4 text-base resize-none overflow-hidden focus:outline-none focus:border-zinc-600"
+          className="w-full bg-neutral-950 text-neutral-300 placeholder-neutral-500 border border-neutral-800 rounded-lg p-4 text-base resize-none overflow-hidden focus:outline-none focus:border-neutral-700"
           onInput={(e) => {
             const el = e.currentTarget;
             el.style.height = "auto";
@@ -67,7 +66,7 @@ export default function Comments({
         />
         <button
           onClick={handleSubmit}
-          className="self-end w-32 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 px-4 py-2 rounded-md transition-colors"
+          className="self-end w-32 bg-input/30 text-primary/90 font-[550] px-4 py-2 rounded-md border border-input/80 hover:bg-input/50 transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/70 disabled:cursor-not-allowed disabled:bg-primary/50"
         >
           Comment
         </button>
@@ -75,17 +74,17 @@ export default function Comments({
 
       {error && <p className="text-red-400">{error}</p>}
 
-      {/* {loading && <p className="text-zinc-500">Loading comments...</p>} */}
+      {/* {loading && <p className="text-neutral-500">Loading comments...</p>} */}
 
-      {comments.length === 0 && <p className="text-zinc-500">No comments yet.</p>}
+      {comments.length === 0 && <p className="text-neutral-500">No comments yet.</p>}
 
       <ul className="flex flex-col gap-6">
         {comments.map((comment) => (
           <li key={comment.id}>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-neutral-500">
               By {comment.user_name} on {new Date(comment.created_at).toLocaleDateString("cs-CZ")}
             </p>
-            <p className="text-base text-zinc-300 leading-relaxed">{comment.content}</p>
+            <p className="text-base text-neutral-300 leading-relaxed">{comment.content}</p>
           </li>
         ))}
       </ul>
