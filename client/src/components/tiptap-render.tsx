@@ -1,10 +1,9 @@
-import { renderJSONContentToReactElement } from "@tiptap/static-renderer/json/react";
 import { renderToReactElement } from "@tiptap/static-renderer/pm/react";
 import { JSONContent } from "@tiptap/core";
 import { createExtensions } from "@/lib/tiptap-extensions";
-import { type NodeType } from "@tiptap/core";
 import { extractHighlightedCodeBlocks } from "@/lib/extractCodeBlocks";
 import { highlightCode } from "@/lib/highlight";
+import { CopyButton } from "./copy-button";
 
 interface TiptapRendererProps {
   content: JSONContent;
@@ -34,7 +33,18 @@ export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps)
             );
 
           return (
-            <div className="not-prose my-2" dangerouslySetInnerHTML={{ __html: highlighted }} />
+            <div className="not-prose my-2 overflow-hidden relative group">
+              {/* language label and button top right */}
+              <div className="absolute top-0 right-0 z-50 px-2 py-0 select-none">
+                <span className="text-sm font-medium text-neutral-400 tracking-wide group-hover:opacity-0 transition-opacity">
+                  {lang}
+                </span>
+              </div>
+              <CopyButton code={code} />
+
+              {/* Shiki output */}
+              <div dangerouslySetInnerHTML={{ __html: highlighted }} />
+            </div>
           );
         },
       },
@@ -49,63 +59,5 @@ export async function TiptapExtensionsRenderer({ content }: TiptapRendererProps)
     <article className="flex flex-col w-full prose prose-neutral dark:prose-invert max-w-none">
       {rendered}
     </article>
-  );
-}
-
-export function TiptapManualRenderer({ content }: TiptapRendererProps) {
-  if (!content) return null;
-
-  const renderJson = renderJSONContentToReactElement({
-    nodeMapping: {
-      doc: ({ children }) => <div>{children}</div>,
-      paragraph: ({ children }) => <p>{children}</p>,
-      heading: ({ node, children }) => {
-        const level = node.attrs?.level ?? 1;
-        const Tag = `h${level}` as keyof React.JSX.IntrinsicElements;
-        return <Tag>{children}</Tag>;
-      },
-      bulletList: ({ children }) => <ul>{children}</ul>,
-      orderedList: ({ children }) => <ol>{children}</ol>,
-      listItem: ({ children }) => <li>{children}</li>,
-      blockquote: ({ children }) => <blockquote>{children}</blockquote>,
-      codeBlock: ({ node, children }) => (
-        <pre data-language={node.attrs?.language}>
-          <code>{children}</code>
-        </pre>
-      ),
-      horizontalRule: () => <hr />,
-      hardBreak: () => <br />,
-      text: ({ node }) => <>{(node as JSONContent).text}</>,
-    },
-    markMapping: {
-      bold: ({ children }) => <strong>{children}</strong>,
-      italic: ({ children }) => <em>{children}</em>,
-      strike: ({ children }) => <s>{children}</s>,
-      code: ({ children }) => <code>{children}</code>,
-      underline: ({ children }) => <u>{children}</u>,
-      link: ({ mark, children }) => (
-        <a
-          href={mark.attrs?.href}
-          target={mark.attrs?.target ?? "_blank"}
-          rel="noopener noreferrer"
-        >
-          {children}
-        </a>
-      ),
-      textStyle: ({ mark, children }) => {
-        const style: React.CSSProperties = {
-          ...(mark.attrs?.color && { color: mark.attrs.color }),
-          ...(mark.attrs?.fontSize && { fontSize: mark.attrs.fontSize }),
-          ...(mark.attrs?.fontFamily && { fontFamily: mark.attrs.fontFamily }),
-        };
-        return <span style={style}>{children}</span>;
-      },
-    },
-  });
-
-  return (
-    <div className="prose prose-neutral dark:prose-invert">
-      {renderJson({ content: content as NodeType })}
-    </div>
   );
 }
