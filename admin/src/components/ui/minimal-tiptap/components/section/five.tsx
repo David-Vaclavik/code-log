@@ -14,6 +14,7 @@ import { LinkEditPopover } from "../link/link-edit-popover";
 import { ImageEditDialog } from "../image/image-edit-dialog";
 import { ToolbarSection } from "../toolbar-section";
 import { FileCode } from "lucide-react";
+import { CodeBlockLanguageSwitcher } from "../codeblock-language";
 
 type InsertElementAction = "codeBlock" | "blockquote" | "horizontalRule";
 interface InsertElement extends FormatAction {
@@ -83,6 +84,8 @@ export const SectionFive: React.FC<SectionFiveProps> = ({
         size={size}
         variant={variant}
       />
+      {/* <LinkEditPopover editor={editor} size={size} variant={variant} /> */}
+      <CodeBlockLanguageSwitcher editor={editor} />
     </>
   );
 };
