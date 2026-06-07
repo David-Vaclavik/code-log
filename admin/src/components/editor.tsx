@@ -5,7 +5,6 @@ import { Content, generateHTML } from "@tiptap/react";
 import { MinimalTiptapEditor } from "./ui/minimal-tiptap";
 import { Button } from "./ui/button";
 import { createExtensions } from "./ui/minimal-tiptap/hooks/use-minimal-tiptap";
-// import { usePathname, useRouter } from "next/navigation";
 
 const jsonExample = {
   type: "doc",
@@ -22,10 +21,8 @@ const jsonExample = {
   ],
 };
 
+//! this is not used anymore, replaced by edit-post.tsx, but keeping it for testing purposes for now, will delete later
 export default function PostEditor() {
-  // const router = useRouter();
-  // const pathname = usePathname();
-
   const [content, setContent] = useState<Content>("");
   const [editorKey, setEditorKey] = useState(0);
   const [form, setForm] = useState({
@@ -74,7 +71,7 @@ export default function PostEditor() {
     e.preventDefault();
     // console.log("Raw Form: ", form);
 
-    // TypeScript, React - for now tags must be a comma separated string
+    // For now tags must be a comma separated string
     const payloadForm = {
       ...form,
       tags: form.tags
@@ -83,7 +80,6 @@ export default function PostEditor() {
             .map((tag) => tag.trim())
             .filter(Boolean)
         : null,
-      // description: "This should be description in the future",
       content: content,
     };
 
@@ -103,16 +99,6 @@ export default function PostEditor() {
       alert(data.error);
       return;
     }
-
-    /*
-    //? Maybe pass id as a prop from parent page.tsx, instead of pathname
-    const draftId = pathname.split("/").pop(); // get the last part of the url
-    if (draftId) {
-      router.push(`/draft`);
-    } else {
-      router.refresh();
-    }
-      */
   };
 
   return (

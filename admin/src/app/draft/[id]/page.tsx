@@ -1,6 +1,11 @@
 import EditPostForm from "@/components/edit-post";
 import { Post } from "@/lib/types";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Draft",
+};
 
 export default async function DraftPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

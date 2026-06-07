@@ -1,4 +1,10 @@
-import PostEditor from "@/components/editor";
+import EditPostForm from "@/components/edit-post";
+// import PostEditor from "@/components/editor";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Draft New Post",
+};
 
 export default function DraftNewPage() {
   return (
@@ -8,7 +14,8 @@ export default function DraftNewPage() {
       {/* <DraftList /> */}
 
       {/* add posts list */}
-      <PostEditor />
+      {/* <PostEditor /> */}
+      <EditPostForm post={null} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useEditorState, type Editor } from "@tiptap/react";
 import {
   Select,
@@ -60,17 +60,11 @@ export function CodeBlockLanguageSwitcher({ editor }: CodeBlockLanguageSwitcherP
       const success = editor.chain().focus().updateAttributes("codeBlock", { language }).run();
 
       if (!success) {
-        console.error(
-          "Failed to update code block language — cursor may not be inside a code block."
-        );
+        console.error("Failed to update code block language.");
       }
     },
     [editor]
   );
-
-  useEffect(() => {
-    console.log("use effect: ", currentLanguage);
-  }, [currentLanguage]);
 
   return (
     <Select disabled={!isInCodeBlock} value={currentLanguage} onValueChange={handleChange}>

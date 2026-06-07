@@ -1,4 +1,9 @@
 import DraftList from "@/components/draft-list";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Drafts",
+};
 
 export default function DraftsPage() {
   return (

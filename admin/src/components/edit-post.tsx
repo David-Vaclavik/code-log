@@ -6,7 +6,10 @@ import { MinimalTiptapEditor } from "./ui/minimal-tiptap";
 import { Button } from "./ui/button";
 import { createExtensions } from "./ui/minimal-tiptap/hooks/use-minimal-tiptap";
 import { Post } from "@/lib/types";
-// import { usePathname, useRouter } from "next/navigation";
+import { redirectAfterAuth } from "@/lib/actions";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const jsonExample = {
   type: "doc",
@@ -23,21 +26,15 @@ const jsonExample = {
   ],
 };
 
-export default function EditPostForm({ post }: { post: Post }) {
-  // const router = useRouter();
-  // const pathname = usePathname();
-
-  // console.log(post);
-
-  const [content, setContent] = useState<Content>(post.content);
+export default function EditPostForm({ post }: { post: Post | null }) {
   const [editorKey, setEditorKey] = useState(0);
+  // If post is null, we initialize all fields with an empty string, otherwise we use the post content
+  const [content, setContent] = useState<Content>(post?.content ?? "");
   const [form, setForm] = useState({
-    title: post.title,
-    description: post.description,
-    tags: post.tags?.join(", "),
+    title: post?.title ?? "",
+    tags: post?.tags?.join(", ") ?? "",
+    description: post?.description ?? "",
   });
-
-  // console.log(form);
 
   const handleConsoleLog = () => {
     console.log(content);
@@ -79,7 +76,7 @@ export default function EditPostForm({ post }: { post: Post }) {
     e.preventDefault();
     // console.log("Raw Form: ", form);
 
-    // TypeScript, React - for now tags must be a comma separated string
+    // For now tags must be a comma separated string
     const payloadForm = {
       ...form,
       tags: form.tags
@@ -93,8 +90,16 @@ export default function EditPostForm({ post }: { post: Post }) {
 
     console.log("Formatted Form: ", payloadForm);
 
-    const res = await fetch(`http://localhost:3000/posts/${post.id}`, {
-      method: "PUT",
+    //TODO: Move the fetch logic to a server action if you want to keep the API URL private (not exposed to the browser).
+    //? or pass it as a prop?
+    const url = post
+      ? `${process.env.NEXT_PUBLIC_API_URL}/posts/${post.id}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/posts`;
+    // console.log(url);
+    const methodFinal = post ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+      method: methodFinal,
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify(payloadForm),
@@ -108,69 +113,49 @@ export default function EditPostForm({ post }: { post: Post }) {
       return;
     }
 
-    /*
-    //? Maybe pass id as a prop from parent page.tsx, instead of pathname
-    const draftId = pathname.split("/").pop(); // get the last part of the url
-    if (draftId) {
-      router.push(`/draft`);
-    } else {
-      router.refresh();
+    toast.success(`Post ${post ? "updated" : "created"} successfully!`);
+    if (!post) {
+      redirectAfterAuth("/draft", "page");
     }
-    */
   };
 
   return (
     <div className="flex flex-col max-w-3xl-editor gap-4">
-      <h2>Edit post form</h2>
-
       <form action="" onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          placeholder="Title"
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          className=" bg-zinc-600 py-1.5 px-3"
-        />
-        <input
-          placeholder="Tags"
-          name="tags"
-          value={form.tags}
-          onChange={handleChange}
-          className=" bg-zinc-600 py-1.5 px-3"
-        />
-        <input
+        <Input placeholder="Title" name="title" value={form.title} onChange={handleChange} />
+        <Input placeholder="Tags" name="tags" value={form.tags} onChange={handleChange} />
+
+        <Textarea
           placeholder="Description"
           name="description"
           value={form.description}
           onChange={handleChange}
-          className=" bg-zinc-600 py-1.5 px-3"
         />
 
-        <button type="submit" className="bg-zinc-800">
-          Submit
-        </button>
+        <MinimalTiptapEditor
+          key={editorKey}
+          value={content}
+          onChange={setContent}
+          className="min-h-120 w-full"
+          editorContentClassName="p-5 flex flex-1"
+          output="json"
+          placeholder="Write your post..."
+          autofocus={true}
+          editable={true}
+          editorClassName="focus:outline-none flex-1"
+        />
+
+        <Button type="submit">Submit</Button>
       </form>
 
-      <MinimalTiptapEditor
-        key={editorKey}
-        value={content}
-        onChange={setContent}
-        className="min-h-120 w-full"
-        editorContentClassName="p-5 flex flex-1"
-        output="json"
-        placeholder="Write your post..."
-        autofocus={true}
-        editable={true}
-        editorClassName="focus:outline-none flex-1"
-      />
-
+      {/* Buttons below for testing only */}
       <Button onClick={handleConsoleLog} variant="outline">
         Console log content
       </Button>
       <Button onClick={handleSetContent} variant="outline">
         Set content
       </Button>
-      <Button onClick={handleGenerate} variant="default">
+      <Button onClick={handleGenerate} variant="outline">
         Generate HTML
       </Button>
     </div>
