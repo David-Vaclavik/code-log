@@ -9,40 +9,47 @@ import { Post } from "@/lib/types";
 import { redirectAfterAuth } from "@/lib/actions";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2Icon } from "lucide-react";
 
-const jsonExample = {
-  type: "doc",
-  content: [
-    {
-      type: "paragraph",
-      content: [
-        {
-          text: "Testing setting content with JSON",
-          type: "text",
-        },
-      ],
-    },
-  ],
-};
+const formSchema = z.object({
+  title: z
+    .string()
+    .min(2, "Title must be at least 2 characters.")
+    .max(255, "Title must be at most 255 characters."),
+  tags: z.string().max(255, "Tags must be at most 255 characters.").optional(),
+  description: z
+    .string()
+    .min(5, "Description must be at least 5 characters.")
+    .max(350, "Description must be at most 350 characters."),
+});
 
-export default function EditPostForm({ post }: { post: Post | null }) {
-  const [editorKey, setEditorKey] = useState(0);
-  // If post is null, we initialize all fields with an empty string, otherwise we use the post content
+type FormValues = z.infer<typeof formSchema>;
+
+export function PostForm({ post }: { post: Post | null }) {
+  // If post is null, we initialize all fields with an empty string, otherwise we use the post fields
   const [content, setContent] = useState<Content>(post?.content ?? "");
-  const [form, setForm] = useState({
-    title: post?.title ?? "",
-    tags: post?.tags?.join(", ") ?? "",
-    description: post?.description ?? "",
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: post?.title ?? "",
+      tags: post?.tags?.join(", ") ?? "",
+      description: post?.description ?? "",
+    },
   });
 
   const handleConsoleLog = () => {
     console.log(content);
-  };
-
-  const handleSetContent = () => {
-    setContent(jsonExample);
-    setEditorKey((prev) => prev + 1);
   };
 
   const handleGenerate = () => {
@@ -60,80 +67,127 @@ export default function EditPostForm({ post }: { post: Post | null }) {
       const html = generateHTML(content, createExtensions({ placeholder: "", output: "json" }));
       console.log("HTML: ", html);
     } catch (error) {
-      console.error("Failed to generate HTML from post content:", error);
+      toast.error("Failed to generate HTML from post content: " + error);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    // console.log(form);
-  };
-
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // console.log("Raw Form: ", form);
-
-    // For now tags must be a comma separated string
-    const payloadForm = {
-      ...form,
-      tags: form.tags
-        ? form.tags
-            .split(",")
-            .map((tag) => tag.trim())
-            .filter(Boolean)
-        : null,
-      content: content,
-    };
-
-    console.log("Formatted Form: ", payloadForm);
-
-    //TODO: Move the fetch logic to a server action if you want to keep the API URL private (not exposed to the browser).
-    //? or pass it as a prop?
-    const url = post
-      ? `${process.env.NEXT_PUBLIC_API_URL}/posts/${post.id}`
-      : `${process.env.NEXT_PUBLIC_API_URL}/posts`;
-    // console.log(url);
-    const methodFinal = post ? "PUT" : "POST";
-
-    const res = await fetch(url, {
-      method: methodFinal,
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payloadForm),
-    });
-
-    const data = await res.json();
-    console.log("Data: ", data);
-
-    if (!res.ok) {
-      alert(data.error);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (!content) {
+      toast.error("Post content is required");
       return;
     }
 
-    toast.success(`Post ${post ? "updated" : "created"} successfully!`);
-    if (!post) {
-      redirectAfterAuth("/draft", "page");
+    try {
+      // For now tags must be a comma separated string
+      const payloadForm = {
+        ...data,
+        tags: data.tags
+          ? data.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean)
+          : null,
+        content: content,
+      };
+
+      console.log("Formatted Form: ", payloadForm);
+
+      //TODO: Move the fetch logic to a server action if you want to keep the API URL private (not exposed to the browser).
+      //? or pass it as a prop?
+      const url = post
+        ? `${process.env.NEXT_PUBLIC_API_URL}/posts/${post.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/posts`;
+
+      const res = await fetch(url, {
+        method: post ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payloadForm),
+      });
+
+      const result = await res.json();
+      console.log("Data: ", result);
+
+      if (!res.ok) {
+        toast.error(result.error || `Failed to ${post ? "update" : "create"} post`);
+        return;
+      }
+
+      toast.success(`Post ${post ? "updated" : "created"} successfully!`);
+      if (!post) {
+        redirectAfterAuth("/draft", "page");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred: " + error);
     }
   };
 
   return (
     <div className="flex flex-col max-w-3xl-editor gap-4">
-      <form action="" onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input placeholder="Title" name="title" value={form.title} onChange={handleChange} />
-        <Input placeholder="Tags" name="tags" value={form.tags} onChange={handleChange} />
-
-        <Textarea
-          placeholder="Description"
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-        />
+      <form id="post-form" onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <FieldGroup>
+          <Controller
+            name="title"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="post-form-title">Title</FieldLabel>
+                <Input
+                  {...field}
+                  id="post-form-title"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Login button not working on mobile"
+                  autoComplete="off"
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+          <Controller
+            name="tags"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="post-form-tags">Tags</FieldLabel>
+                <Input
+                  {...field}
+                  id="post-form-tags"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="React, Mobile, Bug"
+                  autoComplete="off"
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+          <Controller
+            name="description"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="post-form-description">Description</FieldLabel>
+                <InputGroup>
+                  <InputGroupTextarea
+                    {...field}
+                    id="post-form-description"
+                    placeholder="I'm having an issue with the login button on mobile."
+                    rows={6}
+                    className="min-h-24 resize-none text-base!"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  <InputGroupAddon align="block-end">
+                    <InputGroupText className="tabular-nums">
+                      {field.value.length}/350 characters
+                    </InputGroupText>
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </InputGroupAddon>
+                </InputGroup>
+              </Field>
+            )}
+          />
+        </FieldGroup>
 
         <MinimalTiptapEditor
-          key={editorKey}
           value={content}
           onChange={setContent}
           className="min-h-120 w-full"
@@ -145,15 +199,32 @@ export default function EditPostForm({ post }: { post: Post | null }) {
           editorClassName="focus:outline-none flex-1"
         />
 
-        <Button type="submit">Submit</Button>
+        {/* <Button type="submit">Submit</Button> */}
+
+        <Field orientation={"horizontal"}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={form.formState.isSubmitting}
+            onClick={() => form.reset()}
+          >
+            Reset
+          </Button>
+          <Button
+            type="submit"
+            form="post-form"
+            disabled={form.formState.isSubmitting}
+            className="grow"
+          >
+            {form.formState.isSubmitting && <Loader2Icon className="animate-spin" />}
+            Submit
+          </Button>
+        </Field>
       </form>
 
       {/* Buttons below for testing only */}
       <Button onClick={handleConsoleLog} variant="outline">
         Console log content
-      </Button>
-      <Button onClick={handleSetContent} variant="outline">
-        Set content
       </Button>
       <Button onClick={handleGenerate} variant="outline">
         Generate HTML

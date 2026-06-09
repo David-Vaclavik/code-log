@@ -32,3 +32,31 @@ https://www.saasui.design/pattern/editor/luma
 ## Form
 
 - `npm install zod react-hook-form @hookform/resolvers` for form handling and validation
+
+### Editor content example:
+
+```json
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "This is an example of Tiptap content in JSON format.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "You can use this structure to initialize the editor with existing content.",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+```
