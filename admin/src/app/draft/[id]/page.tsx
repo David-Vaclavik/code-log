@@ -21,7 +21,7 @@ export default async function DraftPage({ params }: { params: Promise<{ id: stri
 }
 
 async function getPost(id: string): Promise<Post> {
-  const res = await fetch(`http://localhost:3000/posts/${id}`);
+  const res = await fetch(`${process.env.API_URL}/posts/${id}`);
 
   if (res.status === 404) notFound();
 

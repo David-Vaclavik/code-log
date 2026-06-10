@@ -93,7 +93,6 @@ export function PostForm({ post }: { post: Post | null }) {
       console.log("Formatted Form: ", payloadForm);
 
       //TODO: Move the fetch logic to a server action if you want to keep the API URL private (not exposed to the browser).
-      //? or pass it as a prop?
       const url = post
         ? `${process.env.NEXT_PUBLIC_API_URL}/posts/${post.id}`
         : `${process.env.NEXT_PUBLIC_API_URL}/posts`;
@@ -198,8 +197,6 @@ export function PostForm({ post }: { post: Post | null }) {
           editable={true}
           editorClassName="focus:outline-none flex-1"
         />
-
-        {/* <Button type="submit">Submit</Button> */}
 
         <Field orientation={"horizontal"}>
           <Button
