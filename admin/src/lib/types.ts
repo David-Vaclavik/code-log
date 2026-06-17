@@ -31,3 +31,14 @@ export type User = {
   email: string;
   isAdmin: boolean;
 };
+
+// Used in components/draft-list.tsx, app/draft/page.tsx
+export interface PaginatedResult<T> {
+  data: T[];
+  meta: {
+    total: number;
+    offset: number;
+    limit: number;
+    hasMore: boolean;
+  };
+}

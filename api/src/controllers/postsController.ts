@@ -1,12 +1,27 @@
 import { Request, Response } from "express";
-import { getAllPosts, getPostById, insertPost, updatePost } from "../services/postsService.js";
+import {
+  getPaginatedPosts,
+  getPostById,
+  insertPost,
+  updatePost,
+} from "../services/postsService.js";
 import { Post } from "../types/types.js";
+import { paginate } from "../lib/pagination.js";
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
-    const posts: Post[] = await getAllPosts();
+    // http://localhost:3000/posts?offset=0&limit=10
+    const offset = Math.max(0, parseInt(req.query.offset as string) || 0);
+    //? maybe add if limit is 0 it will return all posts???
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 10));
 
-    res.json(posts);
+    const { data, total } = await getPaginatedPosts(offset, limit);
+
+    // serialize the data
+    const payload = paginate(data, total, offset, limit);
+    // console.log("Payload: ", payload);
+
+    res.json(payload);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch posts" });
