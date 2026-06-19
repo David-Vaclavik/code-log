@@ -32,7 +32,7 @@ export type User = {
   isAdmin: boolean;
 };
 
-// Used in components/draft-list.tsx, app/draft/page.tsx
+// Used in components/draft-list.tsx, app/lib/actions.ts
 export interface PaginatedResult<T> {
   data: T[];
   meta: {

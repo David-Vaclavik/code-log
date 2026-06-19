@@ -56,6 +56,23 @@
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
 
+  /* below used for sonner toast, there is a variable name collision for --success-bg and so on check shadcn sonner.tsx ui component */
+  --color-success-color-bg: var(--success-color-bg);
+  --color-success-color-border: var(--success-color-border);
+  --color-success-color-text: var(--success-color-text);
+
+  --color-warning-color-bg: var(--warning-color-bg);
+  --color-warning-color-border: var(--warning-color-border);
+  --color-warning-color-text: var(--warning-color-text);
+
+  --color-destructive-color-bg: var(--destructive-color-bg);
+  --color-destructive-color-border: var(--destructive-color-border);
+  --color-destructive-color-text: var(--destructive-color-text);
+
+  --color-info-color-bg: var(--info-color-bg);
+  --color-info-color-border: var(--info-color-border);
+  --color-info-color-text: var(--info-color-text);
+
   /* that creates: max-w-3xl-editor - which is used for editor and 
    * adds padding and border so content is the same width as in client */
   --container-3xl-editor: calc(var(--container-3xl) + 42px);
@@ -69,7 +86,7 @@
   --foreground: oklch(0 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0 0 0);
-  --popover: oklch(0.99 0 0);
+  --popover: oklch(0.92 0 0);
   --popover-foreground: oklch(0 0 0);
   --primary: oklch(0 0 0);
   --primary-foreground: oklch(1 0 0);
@@ -167,6 +184,23 @@
   --shadow-lg: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 4px 6px -1px hsl(0 0% 0% / 0.18);
   --shadow-xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.18), 0px 8px 10px -1px hsl(0 0% 0% / 0.18);
   --shadow-2xl: 0px 1px 2px 0px hsl(0 0% 0% / 0.45);
+
+  /* below used for sonner toast */
+  --success-color-bg: oklch(0.16 0.04 149.58);
+  --success-color-border: oklch(0.32 0.08 149.58);
+  --success-color-text: oklch(0.72 0.19 149.58);
+
+  --warning-color-bg: oklch(0.16 0.035 85);
+  --warning-color-border: oklch(0.32 0.07 85);
+  --warning-color-text: oklch(0.85 0.17 85);
+
+  --destructive-color-bg: oklch(0.16 0.04 23.91);
+  --destructive-color-border: oklch(0.32 0.08 23.91);
+  --destructive-color-text: oklch(0.69 0.2 23.91);
+
+  --info-color-bg: oklch(0.16 0.04 255);
+  --info-color-border: oklch(0.32 0.08 255);
+  --info-color-text: oklch(0.65 0.18 255);
 }
 
 @layer base {
